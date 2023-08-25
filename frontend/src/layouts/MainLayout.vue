@@ -71,6 +71,6 @@ function toggleLeftDrawer() {
 
 <style lang="scss" scoped>
 .app-container {
-  margin: 5% 5% 5% 5%;
+  margin: 2% 2% 2% 2%;
 }
 </style>
