@@ -9,18 +9,33 @@
       </q-avatar>
     </section>
 
+    <section class="themen-summary">
+      <BereichScoreGraph title="Umwelt" :rating="50" />
+    </section>
+
     <q-tabs v-model="bereich" class="text-teal">
       <q-tab name="umwelt" icon="compost" label="Umwelt" />
       <q-tab name="soziales" icon="groups" label="Soziales" />
       <q-tab name="wirtschaft" icon="trending_up" label="Wirtschaft" />
     </q-tabs>
   </div>
+
+  <q-btn @click="getData()">
+  asldjhadskj</q-btn>
 </template>
 
 <script setup>
 import { ref } from 'vue';
+import BereichScoreGraph from 'src/components/GemeindeDetail/BereichScoreGraph.vue';
 
 const bereich = ref('umwelt');
+
+async function getData() {
+  const data = await fetch('http://localhost:3000/api/municipality')
+  const json = await data.json()
+  console.log(json)
+}
+
 </script>
 
 <style>
