@@ -1,6 +1,6 @@
 import {Municipality} from "./interfaces";
 
-export const mochData: Municipality = {
+export const mockData: Municipality = {
     meta: {
         id: 1,
         municipalityName: 'Paradise',
