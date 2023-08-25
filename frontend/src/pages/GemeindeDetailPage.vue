@@ -10,18 +10,19 @@
     </section>
 
     <section class="themen-summary">
-      <BereichScoreGraph title="Umwelt" :rating="50" />
+      <BereichScoreGraph title="Umwelt" :rating="7" />
+      <BereichScoreGraph title="Soziales" :rating="4" />
+      <BereichScoreGraph title="Wirtshaft" :rating="9" />
     </section>
 
-    <q-tabs v-model="bereich" class="text-teal">
+    <section class="tabs">
+      <q-tabs v-model="bereich" class="text-teal" align="justify">
       <q-tab name="umwelt" icon="compost" label="Umwelt" />
       <q-tab name="soziales" icon="groups" label="Soziales" />
       <q-tab name="wirtschaft" icon="trending_up" label="Wirtschaft" />
     </q-tabs>
+    </section>
   </div>
-
-  <q-btn @click="getData()">
-  asldjhadskj</q-btn>
 </template>
 
 <script setup>
@@ -29,13 +30,6 @@ import { ref } from 'vue';
 import BereichScoreGraph from 'src/components/GemeindeDetail/BereichScoreGraph.vue';
 
 const bereich = ref('umwelt');
-
-async function getData() {
-  const data = await fetch('http://localhost:3000/api/municipality')
-  const json = await data.json()
-  console.log(json)
-}
-
 </script>
 
 <style>
@@ -45,20 +39,21 @@ async function getData() {
   align-items: center;
 }
 
-.q-tab__label {
-  font-size: 1.5em;
-}
-
-.q-tab__icon {
-  font-size: 2em;
-}
-
 .title {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   gap: 1rem;
+}
+
+.themen-summary {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 3rem;
+  width: 100%;
 }
 
 .title h2 {
