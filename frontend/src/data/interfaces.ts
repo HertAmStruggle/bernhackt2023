@@ -1,5 +1,6 @@
 export interface Municipality {
     meta: {
+      id: number;
         municipalityName: string;
         surveyParticipants: number;
     },
