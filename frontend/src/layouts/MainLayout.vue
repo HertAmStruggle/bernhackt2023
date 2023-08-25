@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout view="hHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
         <q-btn
@@ -11,35 +11,25 @@
           @click="toggleLeftDrawer"
         />
 
-        <q-toolbar-title>
-          Quasar App
-        </q-toolbar-title>
+        <q-toolbar-title> Quasar App </q-toolbar-title>
 
         <div>Quasar v{{ $q.version }}</div>
       </q-toolbar>
     </q-header>
 
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-    >
+    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
       <q-list>
-        <q-item-label
-          header
-        >
-          Essential Links
-        </q-item-label>
+        <q-item-label header> Titel Hier </q-item-label>
 
-        <EssentialLink
-          v-for="link in essentialLinks"
+        <NavigationItemVue
+          v-for="link in links"
           :key="link.title"
           v-bind="link"
         />
       </q-list>
     </q-drawer>
 
-    <q-page-container>
+    <q-page-container class="app-container">
       <router-view />
     </q-page-container>
   </q-layout>
@@ -47,56 +37,40 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import EssentialLink, { EssentialLinkProps } from 'components/EssentialLink.vue';
+import NavigationItemVue, {
+  NavigationItemProps,
+} from 'src/components/NavigationItem.vue';
 
-const essentialLinks: EssentialLinkProps[] = [
+const links: NavigationItemProps[] = [
   {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
+    title: 'Startseite',
+    caption: '',
+    icon: 'home',
+    link: '/home',
   },
   {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
+    title: 'Gemeinden',
+    caption: '',
     icon: 'public',
-    link: 'https://facebook.quasar.dev'
+    link: '/gemeinden',
   },
   {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
+    title: 'Umfrage',
+    caption: '',
+    icon: 'question_answer',
+    link: '/umfrage',
+  },
 ];
 
-const leftDrawerOpen = ref(false)
+const leftDrawerOpen = ref(false);
 
 function toggleLeftDrawer() {
-  leftDrawerOpen.value = !leftDrawerOpen.value
+  leftDrawerOpen.value = !leftDrawerOpen.value;
 }
 </script>
+
+<style lang="scss" scoped>
+.app-container {
+  margin: 5% 5% 5% 5%;
+}
+</style>
