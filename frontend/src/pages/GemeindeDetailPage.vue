@@ -42,36 +42,11 @@
     </section>
 
     <section class="themen">
-      <div v-if="bereich === 'economy'">
-        <div
-          v-for="(thema, index) in municipalityData[type][bereich]"
-          :key="index"
-        >
-          <div v-for="(indicator, index) in thema" :key="index">
-            <p>{{ indicator.name }}</p>
-          </div>
-        </div>
-      </div>
-      <div v-else-if="bereich === 'social'">
-        <div
-          v-for="(thema, index) in municipalityData[type].social"
-          :key="index"
-        >
-          <div v-for="(indicator, index) in thema" :key="index">
-            <p>{{ indicator.name }}</p>
-          </div>
-        </div>
-      </div>
-      <div v-else-if="bereich === 'environment'">
-        <div
-          v-for="(thema, index) in municipalityData[type].environment"
-          :key="index"
-        >
-          <div v-for="(indicator, index) in thema" :key="index">
-            <p>{{ indicator.name }}</p>
-          </div>
-        </div>
-      </div>
+      <ThemenOverviewGraph
+        :bereich="bereich"
+        :municipality-data="municipalityData"
+        :type="type"
+      ></ThemenOverviewGraph>
     </section>
   </div>
 </template>
@@ -79,12 +54,13 @@
 <script setup lang="ts">
 import BereichScoreGraph from 'src/components/GemeindeDetail/BereichScoreGraph.vue';
 import { useFetch } from '@vueuse/core';
-import type { Municipality } from 'src/data/interfaces';
+import type { Municipality, Sector, Source } from 'src/data/interfaces';
 import { computed, ref } from 'vue';
+import ThemenOverviewGraph from 'src/components/GemeindeDetail/ThemenOverviewGraph.vue';
 
 //TODO: seperate facts and survey
-const bereich = ref<'economy' | 'social' | 'environment'>('environment');
-const type = ref<'survey' | 'facts'>('facts');
+const bereich = ref<Sector>('environment');
+const type = ref<Source>('facts');
 
 const {
   error,
@@ -101,14 +77,11 @@ console.log(municipalityData.value);
  * @param type If the data should origin from factual data or survey data
  * @param sector One of the three sectors
  */
-function calculateSectorMean(
-  type: 'facts' | 'survey',
-  sector: 'economy' | 'social' | 'environment'
-) {
+function calculateSectorMean(source: Source, sector: Sector) {
   let sum = 0;
   let amount = 0;
 
-  if (municipalityData.value?.[type][sector]) {
+  if (municipalityData.value?.[source][sector]) {
     console.log(municipalityData.value?.facts[sector]);
     for (const subjects of Object.values(
       municipalityData.value?.facts[sector]
@@ -128,7 +101,7 @@ function calculateSectorMean(
 }
 
 const factorMeans = computed(() => {
-  let mapOutput = new Map<'economy' | 'social' | 'environment', number>();
+  let mapOutput = new Map<Sector, number>();
   mapOutput.set('economy', calculateSectorMean('facts', 'economy'));
   mapOutput.set('social', calculateSectorMean('facts', 'social'));
   mapOutput.set('environment', calculateSectorMean('facts', 'environment'));
@@ -159,6 +132,10 @@ const factorMeans = computed(() => {
   justify-content: space-evenly;
   gap: 2rem;
   width: 100%;
+}
+
+.themen {
+  width: 90%;
 }
 
 .tabs {
