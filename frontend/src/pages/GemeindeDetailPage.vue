@@ -35,8 +35,6 @@
       />
     </section>
 
-    <section class="checkboxes"></section>
-
     <section class="themen">
       <ThemenOverviewGraph
         :sector="sector"
@@ -49,13 +47,14 @@
       :sector="sector"
     ></ChartTest>
   </div>
+  <div v-else>...Something went wrong while fetching</div>
 </template>
 
 <script setup lang="ts">
 import BereichScoreGraph from 'src/components/GemeindeDetail/BereichScoreGraph.vue';
 import { useFetch } from '@vueuse/core';
 import type { Municipality, Sector } from 'src/data/interfaces';
-import { ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import ThemenOverviewGraph from 'src/components/GemeindeDetail/ThemenOverviewGraph.vue';
 import ChartTest from 'src/components/GemeindeDetail/ChartTest.vue';
 import { useRoute } from 'vue-router';
@@ -73,15 +72,35 @@ const environmentSectorMean = ref(0);
 const economySectorMean = ref(0);
 
 //Data fetching
-
-const route = useRoute()
+const route = useRoute();
+const apiURL = computed(() => {
+  return `http://localhost:3000/municipalities?name=${route.params.id}`;
+});
 const {
+  execute,
   error,
   isFetching,
   data: municipalityData,
-} = await useFetch(`http://localhost:3000/municipalities?name=${route.params.id}`)
-  .get()
-  .json<Municipality[]>();
+} = await useFetch(apiURL).get().json<Municipality[]>();
+
+watch(
+  apiURL,
+  () => {
+    getData();
+  },
+  { immediate: true }
+);
+
+async function getData() {
+  await execute();
+
+  if (!error.value && municipalityData.value?.[0]) {
+    //Datenzuweisung
+    socialSectorMean.value = calculateSectorMean('social');
+    environmentSectorMean.value = calculateSectorMean('environment');
+    economySectorMean.value = calculateSectorMean('economy');
+  }
+}
 
 /**
  * Funktion um den Sektormittelwert zu berechnen
@@ -105,11 +124,6 @@ function calculateSectorMean(sector: Sector) {
   });
   return Math.round((sum / amount) * 10) / 10;
 }
-
-//Datenzuweisung
-socialSectorMean.value = calculateSectorMean('social');
-environmentSectorMean.value = calculateSectorMean('environment');
-economySectorMean.value = calculateSectorMean('economy');
 </script>
 
 <style>
