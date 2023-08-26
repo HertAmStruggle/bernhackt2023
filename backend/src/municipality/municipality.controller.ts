@@ -4,26 +4,25 @@ import { mockData } from 'src/mockData';
 
 @Controller('municipality')
 export class MunicipalityController {
+  constructor(private municipalityService: MunicipalityService) {}
 
-    constructor (private municipalityService: MunicipalityService) {}
+  @Get()
+  async getMockMunicipality() {
+    return mockData;
+  }
 
-    @Get()
-    async getMockMunicipality() {
-        return mockData;
-    }
+  @Get('all')
+  async getAllMunicipalities() {
+    return new HttpException('not implemented', 501);
+  }
 
-    @Get('all')
-    async getAllMunicipalities() {
-        return new HttpException("not implemented", 501)
-    }
+  @Get('indicator')
+  async getAllIndicators() {
+    return this.municipalityService.getAllIndicators();
+  }
 
-    @Get('indicator')
-    async getAllIndicators() {
-        return this.municipalityService.getAllIndicators()
-    }
-
-    @Get(':id')
-    async getMunicipalityById(@Param('id') id: number) {
-        return new HttpException(`not implemented: ${id}`, 501)
-    }
+  @Get(':id')
+  async getMunicipalityById(@Param('id') id: number) {
+    return new HttpException(`not implemented: ${id}`, 501);
+  }
 }

@@ -1,6 +1,6 @@
 <template>
   <div v-if="isFetching">...Loading</div>
-  <div v-else class="main-container">
+  <div v-else-if="!error && municipalityData" class="main-container">
     <section class="title">
       <h2>Biel/Bienne</h2>
       <q-avatar square>
@@ -11,9 +11,15 @@
     </section>
 
     <section class="themen-summary">
-      <BereichScoreGraph title="Umwelt" :rating="7" />
-      <BereichScoreGraph title="Soziales" :rating="4" />
-      <BereichScoreGraph title="Wirtshaft" :rating="9" />
+      <BereichScoreGraph
+        title="Umwelt"
+        :rating="factorMeans.get('environment')"
+      />
+      <BereichScoreGraph title="Soziales" :rating="factorMeans.get('social')" />
+      <BereichScoreGraph
+        title="Wirtshaft"
+        :rating="factorMeans.get('economy')"
+      />
     </section>
 
     <section class="tabs">
@@ -34,7 +40,17 @@
         ]"
       />
     </section>
-    {{ JSON.stringify(municipalityData) }}
+
+    <section class="themen">
+      <div
+        v-for="(thema, index) in municipalityData.facts.economy"
+        :key="index"
+      >
+        <div v-for="(indicator, index) in thema" :key="index">
+          <p>{{ indicator.name }}</p>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -42,17 +58,26 @@
 import BereichScoreGraph from 'src/components/GemeindeDetail/BereichScoreGraph.vue';
 import { useFetch } from '@vueuse/core';
 import type { Municipality } from 'src/data/interfaces';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 //TODO: seperate facts and survey
 const bereich = ref('environment');
 
-const { isFetching, data: municipalityData } = await useFetch(
-  'http://localhost:3000/api/municipality'
-)
+const {
+  error,
+  isFetching,
+  data: municipalityData,
+} = await useFetch('http://localhost:3000/api/municipality')
   .get()
   .json<Municipality>();
 
+console.log(municipalityData.value);
+
+/**
+ * This function calculates the mean for one sector
+ * @param type If the data should origin from factual data or survey data
+ * @param sector One of the three sectors
+ */
 function calculateSectorMean(
   type: 'facts' | 'survey',
   sector: 'economy' | 'social' | 'environment'
@@ -76,9 +101,16 @@ function calculateSectorMean(
   }
   console.log(`sum: ${sum}`);
   console.log(`amount: ${amount}`);
-  return sum / amount;
+  return Math.round((sum / amount) * 10) / 10;
 }
-console.log(calculateSectorMean('facts', 'economy'));
+
+const factorMeans = computed(() => {
+  let mapOutput = new Map<'economy' | 'social' | 'environment', number>();
+  mapOutput.set('economy', calculateSectorMean('facts', 'economy'));
+  mapOutput.set('social', calculateSectorMean('facts', 'social'));
+  mapOutput.set('environment', calculateSectorMean('facts', 'environment'));
+  return mapOutput;
+});
 </script>
 
 <style>
