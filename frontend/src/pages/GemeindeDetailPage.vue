@@ -1,8 +1,8 @@
 <template>
   <div v-if="isFetching">...Loading</div>
-  <div v-else-if="!error && municipalityData" class="main-container">
+  <div v-else-if="!error && municipalityData?.[0]" class="main-container">
     <section class="title">
-      <h2>{{ municipalityData.meta.municipalityName }}</h2>
+      <h2>{{ municipalityData[0].name }}</h2>
       <q-avatar square>
         <img
           src="https://upload.wikimedia.org/wikipedia/commons/4/47/Wappen_Bern_matt.svg"
@@ -11,20 +11,14 @@
     </section>
 
     <section class="themen-summary">
-      <BereichScoreGraph
-        title="Umwelt"
-        :rating="factorMeans.get('environment')"
-      />
-      <BereichScoreGraph title="Soziales" :rating="factorMeans.get('social')" />
-      <BereichScoreGraph
-        title="Wirtshaft"
-        :rating="factorMeans.get('economy')"
-      />
+      <BereichScoreGraph title="Umwelt" :rating="environmentSectorMean" />
+      <BereichScoreGraph title="Soziales" :rating="socialSectorMean" />
+      <BereichScoreGraph title="Wirtschaft" :rating="economySectorMean" />
     </section>
 
     <section class="tabs">
       <q-btn-toggle
-        v-model="bereich"
+        v-model="sector"
         spread
         class="custom-toggle"
         no-caps
@@ -36,104 +30,86 @@
         :options="[
           { label: 'Umwelt', value: 'environment' },
           { label: 'Soziales', value: 'social' },
-          { label: 'Wirtshaft', value: 'economy' },
+          { label: 'Wirtschaft', value: 'economy' },
         ]"
       />
     </section>
 
+    <section class="checkboxes"></section>
+
     <section class="themen">
-      <div v-if="bereich === 'economy'">
-        <div
-          v-for="(thema, index) in municipalityData[type][bereich]"
-          :key="index"
-        >
-          <div v-for="(indicator, index) in thema" :key="index">
-            <p>{{ indicator.name }}</p>
-          </div>
-        </div>
-      </div>
-      <div v-else-if="bereich === 'social'">
-        <div
-          v-for="(thema, index) in municipalityData[type].social"
-          :key="index"
-        >
-          <div v-for="(indicator, index) in thema" :key="index">
-            <p>{{ indicator.name }}</p>
-          </div>
-        </div>
-      </div>
-      <div v-else-if="bereich === 'environment'">
-        <div
-          v-for="(thema, index) in municipalityData[type].environment"
-          :key="index"
-        >
-          <div v-for="(indicator, index) in thema" :key="index">
-            <p>{{ indicator.name }}</p>
-          </div>
-        </div>
-      </div>
+      <ThemenOverviewGraph
+        :sector="sector"
+        :municipality-data="municipalityData[0]"
+      ></ThemenOverviewGraph>
     </section>
+
+    <ChartTest
+      :municipality-data="municipalityData[0]"
+      :sector="sector"
+    ></ChartTest>
   </div>
 </template>
 
 <script setup lang="ts">
 import BereichScoreGraph from 'src/components/GemeindeDetail/BereichScoreGraph.vue';
 import { useFetch } from '@vueuse/core';
-import type { Municipality } from 'src/data/interfaces';
-import { computed, ref } from 'vue';
+import type { Municipality, Sector } from 'src/data/interfaces';
+import { ref } from 'vue';
+import ThemenOverviewGraph from 'src/components/GemeindeDetail/ThemenOverviewGraph.vue';
+import ChartTest from 'src/components/GemeindeDetail/ChartTest.vue';
+import { useRoute } from 'vue-router';
 
-//TODO: seperate facts and survey
-const bereich = ref<'economy' | 'social' | 'environment'>('environment');
-const type = ref<'survey' | 'facts'>('facts');
+/**
+ * Einer der 3 möglichen Bereiche der Daten
+ */
+const sector = ref<Sector>('environment');
 
+/**
+ * Variablen die für jeden Sektor den Durchschnitt darstellen (werden später berechnet)
+ */
+const socialSectorMean = ref(0);
+const environmentSectorMean = ref(0);
+const economySectorMean = ref(0);
+
+//Data fetching
+
+const route = useRoute()
 const {
   error,
   isFetching,
   data: municipalityData,
-} = await useFetch('http://localhost:3000/api/municipality')
+} = await useFetch(`http://localhost:3000/municipalities?name=${route.params.id}`)
   .get()
-  .json<Municipality>();
-
-console.log(municipalityData.value);
+  .json<Municipality[]>();
 
 /**
- * This function calculates the mean for one sector
- * @param type If the data should origin from factual data or survey data
- * @param sector One of the three sectors
+ * Funktion um den Sektormittelwert zu berechnen
+ * @param sector
  */
-function calculateSectorMean(
-  type: 'facts' | 'survey',
-  sector: 'economy' | 'social' | 'environment'
-) {
+function calculateSectorMean(sector: Sector) {
   let sum = 0;
   let amount = 0;
-
-  if (municipalityData.value?.[type][sector]) {
-    console.log(municipalityData.value?.facts[sector]);
-    for (const subjects of Object.values(
-      municipalityData.value?.facts[sector]
-    )) {
-      for (const indicator of subjects) {
-        if (indicator.value !== undefined) {
-          console.log(indicator);
-          amount++;
-          sum += indicator.value;
-        }
-      }
+  municipalityData.value?.[0].fact_indicators.forEach((indicator) => {
+    if (indicator.sector === sector) {
+      sum = sum + indicator.value;
+      amount++;
     }
-  }
-  console.log(`sum: ${sum}`);
-  console.log(`amount: ${amount}`);
+  });
+
+  municipalityData.value?.[0].survey_indicators.forEach((indicator) => {
+    if (indicator.sector === sector) {
+      sum = sum + indicator.value;
+      amount++;
+    }
+  });
   return Math.round((sum / amount) * 10) / 10;
 }
 
-const factorMeans = computed(() => {
-  let mapOutput = new Map<'economy' | 'social' | 'environment', number>();
-  mapOutput.set('economy', calculateSectorMean('facts', 'economy'));
-  mapOutput.set('social', calculateSectorMean('facts', 'social'));
-  mapOutput.set('environment', calculateSectorMean('facts', 'environment'));
-  return mapOutput;
-});
+//Datenzuweisung
+socialSectorMean.value = calculateSectorMean('social');
+environmentSectorMean.value = calculateSectorMean('environment');
+economySectorMean.value = calculateSectorMean('economy');
 </script>
 
 <style>
@@ -159,6 +135,10 @@ const factorMeans = computed(() => {
   justify-content: space-evenly;
   gap: 2rem;
   width: 100%;
+}
+
+.themen {
+  width: 90%;
 }
 
 .tabs {

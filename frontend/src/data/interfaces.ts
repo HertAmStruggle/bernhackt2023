@@ -1,46 +1,18 @@
 export interface Municipality {
-  meta: {
-    id: number;
-    municipalityName: string;
-    surveyParticipants: number;
-  };
-  facts: SectorData;
-  survey: SectorData;
-}
-
-export interface SectorData {
-  environment: {
-    biodiversity: Indicator[];
-    climate: Indicator[];
-    energy: Indicator[];
-    air: Indicator[];
-    water: Indicator[];
-    soil: Indicator[];
-    environmentalConsumption: Indicator[];
-  };
-  social: {
-    supplyAndServices: Indicator[];
-    health: Indicator[];
-    qualityOfLiving: Indicator[]; // Wohnangebot und Raumentwicklung
-    security: Indicator[];
-    socialSupportAndSolidarity: Indicator[];
-    equalityAndIntegration: Indicator[];
-    leisureTimeOffers: Indicator[];
-    mobility: Indicator[];
-    education: Indicator[];
-  };
-  economy: {
-    wageAndCostOfLiving: Indicator[];
-    occupation: Indicator[];
-    professionals: Indicator[];
-    economicalResiliance: Indicator[];
-    innovation: Indicator[];
-    attractivenessForEmployers: Indicator[];
-  };
+  id: string;
+  name: string;
+  canton: string;
+  canton_abbreviation: string;
+  survey_indicators: Indicator[];
+  fact_indicators: Indicator[];
 }
 
 export interface Indicator {
   name: string;
-  value: number | undefined;
-  participants?: number;
+  value: number;
+  subject: string;
+  sector: Sector;
 }
+
+export type Sector = 'social' | 'environment' | 'economy';
+export type Source = 'survey_indicators' | 'fact_indicators';

@@ -30,6 +30,9 @@ const props = defineProps({
   },
 });
 
+/**
+ * Variable um die zu darstellende Farbe zu berechnen
+ */
 const circleColor = computed(() => {
   if (props.rating > 7) {
     return 'positive';
