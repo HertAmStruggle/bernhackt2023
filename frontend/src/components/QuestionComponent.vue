@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {ref} from 'vue';
 
-const props = defineProps(['question'])
+const props = defineProps(['question', 'index', 'sector'])
 
 let answer = ref(null)
 
@@ -10,7 +10,7 @@ function checkCompleteness() {
 }
 
 function passValue() {
-  if (checkCompleteness()) console.log("done")
+  if (checkCompleteness()) console.log('done')
 }
 
 </script>
