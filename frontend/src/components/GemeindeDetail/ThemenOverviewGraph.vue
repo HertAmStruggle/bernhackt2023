@@ -5,45 +5,66 @@
         <p>{{ indicator.name }}</p>
         <q-linear-progress
           v-if="indicator.value !== undefined"
-          rounded
-          size="15px"
+          size="30px"
           :value="indicator.value / 10"
-          color="secondary"
+          color="primary"
           class="q-mt-sm"
-        />
+          rounded
+        >
+          <div class="absolute-full flex flex-center">
+            <q-badge
+              color="white"
+              text-color="black"
+              :label="`${indicator.value} / 10`"
+            />
+          </div>
+        </q-linear-progress>
       </div>
     </div>
   </div>
-  <div v-else-if="bereich === 'social'">
-    <div v-for="(thema, index) in municipalityData[type].social" :key="index">
+  <div v-if="bereich === 'social'">
+    <div v-for="(thema, index) in municipalityData[type][bereich]" :key="index">
       <div v-for="(indicator, index) in thema" :key="index">
         <p>{{ indicator.name }}</p>
         <q-linear-progress
           v-if="indicator.value !== undefined"
-          rounded
-          size="15px"
+          size="30px"
           :value="indicator.value / 10"
-          color="secondary"
+          color="primary"
           class="q-mt-sm"
-        />
+          rounded
+        >
+          <div class="absolute-full flex flex-center">
+            <q-badge
+              color="white"
+              text-color="black"
+              :label="`${indicator.value} / 10`"
+            />
+          </div>
+        </q-linear-progress>
       </div>
     </div>
   </div>
-  <div v-else-if="bereich === 'environment'">
-    <div
-      v-for="(thema, index) in municipalityData[type].environment"
-      :key="index"
-    >
+  <div v-if="bereich === 'environment'">
+    <div v-for="(thema, index) in municipalityData[type][bereich]" :key="index">
       <div v-for="(indicator, index) in thema" :key="index">
         <p>{{ indicator.name }}</p>
         <q-linear-progress
           v-if="indicator.value !== undefined"
-          rounded
-          size="15px"
+          size="30px"
           :value="indicator.value / 10"
-          color="secondary"
+          color="primary"
           class="q-mt-sm"
-        />
+          rounded
+        >
+          <div class="absolute-full flex flex-center">
+            <q-badge
+              color="white"
+              text-color="black"
+              :label="`${indicator.value} / 10`"
+            />
+          </div>
+        </q-linear-progress>
       </div>
     </div>
   </div>
