@@ -4,23 +4,43 @@
     <section class="title">
       <h2>{{ municipalityData[0].name }}</h2>
       <q-avatar square>
-        <img :src="getFlagLink(municipalityData[0].canton)" />
+        <img :src="getFlagLink(municipalityData[0].canton)" alt="Kantonsflagge"/>
       </q-avatar>
     </section>
 
-    <section class="themen-summary">
-      <BereichScoreGraph title="Umwelt" :rating="environmentSectorMean" />
-      <BereichScoreGraph title="Soziales" :rating="socialSectorMean" />
-      <BereichScoreGraph title="Wirtschaft" :rating="economySectorMean" />
-    </section>
+    <q-carousel
+      v-model="slide"
+      transition-prev="scale"
+      transition-next="scale"
+      swipeable
+      animated
+      control-color="black"
+      navigation
+      padding
+      arrows
+      style="width: 100%; border: solid #26a69a 1px"
+      height="300px"
+      class="bg-white text-black rounded-borders"
+    >
+      <q-carousel-slide name="circles" class="column no-wrap flex-center">
+        <section class="themen-summary">
+          <BereichScoreGraph title="Umwelt" :rating="environmentSectorMean"/>
+          <BereichScoreGraph title="Soziales" :rating="socialSectorMean"/>
+          <BereichScoreGraph title="Wirtschaft" :rating="economySectorMean"/>
+        </section>
+      </q-carousel-slide>
 
-    <section class="themen-vergleich">
-      <BereichVergleichGraph
-        :umweltFact="environmentFactMean" :umweltSurvey="environmentSurveyMean"
-        :sozialesFact="socialFactMean" :sozialesSurvey="socialSurveyMean"
-        :wirtschaftFact="economyFactMean" :wirtschaftSurvey="economySurveyMean"
-      />
-    </section>
+      <q-carousel-slide name="bars" class="column no-wrap flex-center">
+        <section class="themen-vergleich" style="width">
+          <BereichVergleichGraph
+            :umweltFact="environmentFactMean" :umweltSurvey="environmentSurveyMean"
+            :sozialesFact="socialFactMean" :sozialesSurvey="socialSurveyMean"
+            :wirtschaftFact="economyFactMean" :wirtschaftSurvey="economySurveyMean"
+            style="width: 100%"
+          />
+        </section>
+      </q-carousel-slide>
+    </q-carousel>
 
     <section class="tabs">
       <q-btn-toggle
@@ -43,9 +63,9 @@
 
     <section style="width: 50%;">
       <SpiderChart
-      :municipality-data="municipalityData[0]"
-      :sector="sector"
-    ></SpiderChart>
+        :municipality-data="municipalityData[0]"
+        :sector="sector"
+      ></SpiderChart>
     </section>
 
     <section class="themen">
@@ -65,9 +85,12 @@ import type {Municipality, Sector} from 'src/data/interfaces';
 import {computed, ref, watch} from 'vue';
 import ThemenOverviewGraph from 'src/components/GemeindeDetail/ThemenOverviewGraph.vue';
 import SpiderChart from 'src/components/GemeindeDetail/SpiderChart.vue';
-import { useRoute } from 'vue-router';
-import { getFlagLink } from 'src/data/functions';
+import {useRoute} from 'vue-router';
+import {getFlagLink} from 'src/data/functions';
 import BereichVergleichGraph from 'components/GemeindeDetail/BereichVergleichGraph.vue';
+
+
+const slide = ref('circles');
 
 /**
  * Einer der 3 möglichen Bereiche der Daten
@@ -127,7 +150,7 @@ watch(
   () => {
     getData();
   },
-  { immediate: true }
+  {immediate: true}
 );
 
 /**
