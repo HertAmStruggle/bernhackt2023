@@ -10,16 +10,20 @@
       </q-avatar>
     </section>
 
+    <q-toggle
+      :label="source"
+      color="primary"
+      false-value="survey"
+      true-value="facts"
+      v-model="source"
+      right-label
+      size="md"
+    />
+
     <section class="themen-summary">
-      <BereichScoreGraph
-        title="Umwelt"
-        :rating="factorMeans.get('environment')"
-      />
-      <BereichScoreGraph title="Soziales" :rating="factorMeans.get('social')" />
-      <BereichScoreGraph
-        title="Wirtshaft"
-        :rating="factorMeans.get('economy')"
-      />
+      <BereichScoreGraph title="Umwelt" :rating="environmentSectorMean" />
+      <BereichScoreGraph title="Soziales" :rating="socialSectorMean" />
+      <BereichScoreGraph title="Wirtschaft" :rating="economySectorMean" />
     </section>
 
     <section class="tabs">
@@ -36,16 +40,20 @@
         :options="[
           { label: 'Umwelt', value: 'environment' },
           { label: 'Soziales', value: 'social' },
-          { label: 'Wirtshaft', value: 'economy' },
+          { label: 'Wirtschaft', value: 'economy' },
         ]"
       />
+    </section>
+
+    <section class="checkboxes">
+
     </section>
 
     <section class="themen">
       <ThemenOverviewGraph
         :bereich="bereich"
         :municipality-data="municipalityData"
-        :type="type"
+        :type="source"
       ></ThemenOverviewGraph>
     </section>
   </div>
@@ -55,12 +63,15 @@
 import BereichScoreGraph from 'src/components/GemeindeDetail/BereichScoreGraph.vue';
 import { useFetch } from '@vueuse/core';
 import type { Municipality, Sector, Source } from 'src/data/interfaces';
-import { computed, ref } from 'vue';
+import { ref, watch } from 'vue';
 import ThemenOverviewGraph from 'src/components/GemeindeDetail/ThemenOverviewGraph.vue';
 
-//TODO: seperate facts and survey
 const bereich = ref<Sector>('environment');
-const type = ref<Source>('facts');
+const source = ref<Source>('facts');
+
+const socialSectorMean = ref(0);
+const environmentSectorMean = ref(0);
+const economySectorMean = ref(0);
 
 const {
   error,
@@ -82,9 +93,9 @@ function calculateSectorMean(source: Source, sector: Sector) {
   let amount = 0;
 
   if (municipalityData.value?.[source][sector]) {
-    console.log(municipalityData.value?.facts[sector]);
+    console.log(municipalityData.value?.[source][sector]);
     for (const subjects of Object.values(
-      municipalityData.value?.facts[sector]
+      municipalityData.value?.[source][sector]
     )) {
       for (const indicator of subjects) {
         if (indicator.value !== undefined) {
@@ -100,13 +111,15 @@ function calculateSectorMean(source: Source, sector: Sector) {
   return Math.round((sum / amount) * 10) / 10;
 }
 
-const factorMeans = computed(() => {
-  let mapOutput = new Map<Sector, number>();
-  mapOutput.set('economy', calculateSectorMean('facts', 'economy'));
-  mapOutput.set('social', calculateSectorMean('facts', 'social'));
-  mapOutput.set('environment', calculateSectorMean('facts', 'environment'));
-  return mapOutput;
-});
+watch(
+  source,
+  (newSource) => {
+    economySectorMean.value = calculateSectorMean(newSource, 'economy');
+    socialSectorMean.value = calculateSectorMean(newSource, 'social');
+    environmentSectorMean.value = calculateSectorMean(newSource, 'environment');
+  },
+  { immediate: true }
+);
 </script>
 
 <style>
