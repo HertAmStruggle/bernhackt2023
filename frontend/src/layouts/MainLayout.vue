@@ -30,7 +30,9 @@
     </q-drawer>
 
     <q-page-container class="app-container">
-      <router-view />
+      <Suspense>
+        <router-view />
+      </Suspense>
     </q-page-container>
   </q-layout>
 </template>
