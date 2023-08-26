@@ -116,7 +116,7 @@ function filterFn (val: string, update: (arg0: { (): void; (): void; }) => void)
 async function searchForCity() {
   console.log(citySearch.value)
   if(citySearch.value){
-    await router.push(`/gemeinde/${citySearch.value.label + citySearch.value.county}`);
+    await router.push(`/gemeinden/${citySearch.value.label + citySearch.value.county}`);
     console.log(citySearch.value.label)
   }
 }

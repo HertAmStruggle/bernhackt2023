@@ -15,7 +15,7 @@
 
   <div class="cities">
     <div v-for="city in filteredCities" :key="city.name">
-      <router-link :to="'/gemeinde/' + city.name + city.county">
+      <router-link :to="'/gemeinden/' + city.name + city.county">
         <q-card style="padding: 10px; text-align: center">
           <q-img
             style="width: 203px; height: 246px; object-fit: cover"
