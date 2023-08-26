@@ -24,7 +24,7 @@ function onReset() {
   >
     Hast du bereits einen Code? (Tipp für Hackathon 'bärnhäckt')
     <q-input
-      class="q-mt-md"
+      class="q-mt-lg"
       filled
       type="text"
       v-model="code"
