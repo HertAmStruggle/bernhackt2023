@@ -3,50 +3,50 @@ import { Municipality } from './interfaces';
 export const mockData: Municipality = {
         meta: {
             id: 1,
-            municipalityName: 'Paradise',
+            municipalityName: 'Biel/Bienne',
             surveyParticipants: randomNumber()
         },
         facts: {
             environment: {
                 biodiversity: [
                     {
-                        name: 'test',
+                        name: 'Anzahl Bäume',
                         value: randomNumber()
                     }
                 ],
                 climate: [
                     {
-                        name: 'test',
+                        name: 'CO2 Gehalt',
                         value: randomNumber()
                     }
                 ],
                 energy: [
                     {
-                        name: 'test',
+                        name: 'Grüne-Energie',
                         value: randomNumber()
                     }
                 ],
                 air: [
                     {
-                        name: 'test',
+                        name: 'Luftqualität',
                         value: randomNumber()
                     }
                 ],
                 water: [
                     {
-                        name: 'test',
+                        name: 'Wasserqualität',
                         value: randomNumber()
                     }
                 ],
                 soil: [
                     {
-                        name: 'test',
+                        name: 'Bodenqualität',
                         value: randomNumber()
                     }
                 ],
                 environmentalConsumption: [
                     {
-                        name: 'test',
+                        name: 'Ökologischer Fussabdruck',
                         value: randomNumber()
                     }
                 ]
@@ -54,55 +54,55 @@ export const mockData: Municipality = {
             social: {
                 supplyAndServices: [
                     {
-                        name: 'test',
+                        name: 'Generelle Infrastruktur',
                         value: randomNumber()
                     }
                 ],
                 health: [
                     {
-                        name: 'test',
+                        name: 'Gesundheitsversorgung',
                         value: randomNumber()
                     }
                 ],
                 qualityOfLiving: [
                     {
-                        name: 'test',
+                        name: 'Lebensqualität',
                         value: randomNumber()
                     }
                 ],
                 security: [
                     {
-                        name: 'test',
+                        name: 'Sicherheir gemessen an Verbrechen',
                         value: randomNumber()
                     }
                 ],
                 socialSupportAndSolidarity: [
                     {
-                        name: 'test',
+                        name: 'Solidaritätsgrad',
                         value: randomNumber()
                     }
                 ],
                 equalityAndIntegration: [
                     {
-                        name: 'test',
+                        name: 'Eingliederungsgrad',
                         value: randomNumber()
                     }
                 ],
                 leisureTimeOffers: [
                     {
-                        name: 'test',
+                        name: 'Freizeitangebote',
                         value: randomNumber()
                     }
                 ],
                 mobility: [
                     {
-                        name: 'test',
+                        name: 'Öffentlicher Verkehr',
                         value: randomNumber()
                     }
                 ],
                 education: [
                     {
-                        name: 'test',
+                        name: 'Qualität der Gymnasien',
                         value: randomNumber()
                     }
                 ]
@@ -111,37 +111,37 @@ export const mockData: Municipality = {
             economy: {
                 wageAndCostOfLiving: [
                     {
-                        name: 'test',
+                        name: 'Wohnungspreise',
                         value: randomNumber()
                     }
                 ],
                 occupation: [
                     {
-                        name: 'test',
+                        name: 'Berufsauswahl',
                         value: randomNumber()
                     }
                 ],
                 professionals: [
                     {
-                        name: 'test',
+                        name: 'Spezialisierungen',
                         value: randomNumber()
                     }
                 ],
                 economicalResiliance: [
                     {
-                        name: 'test',
+                        name: 'Ökonomische Stabilität',
                         value: randomNumber()
                     }
                 ],
                 innovation: [
                     {
-                        name: 'test',
+                        name: 'Innovationsgrad',
                         value: randomNumber()
                     }
                 ],
                 attractivenessForEmployers: [
                     {
-                        name: 'test',
+                        name: 'Benefits für Arbeitnehmende',
                         value: randomNumber()
                     }
                 ]
@@ -151,43 +151,43 @@ export const mockData: Municipality = {
             environment: {
                 biodiversity: [
                     {
-                        name: 'test',
+                        name: 'Anzahl Bäume',
                         value: randomNumber()
                     }
                 ],
                 climate: [
                     {
-                        name: 'test',
+                        name: 'CO2 Gehalt',
                         value: randomNumber()
                     }
                 ],
                 energy: [
                     {
-                        name: 'test',
+                        name: 'Grüne-Energie',
                         value: randomNumber()
                     }
                 ],
                 air: [
                     {
-                        name: 'test',
+                        name: 'Luftqualität',
                         value: randomNumber()
                     }
                 ],
                 water: [
                     {
-                        name: 'test',
+                        name: 'Wasserqualität',
                         value: randomNumber()
                     }
                 ],
                 soil: [
                     {
-                        name: 'test',
+                        name: 'Bodenqualität',
                         value: randomNumber()
                     }
                 ],
                 environmentalConsumption: [
                     {
-                        name: 'test',
+                        name: 'Ökologischer Fussabdruck',
                         value: randomNumber()
                     }
                 ]
@@ -195,55 +195,55 @@ export const mockData: Municipality = {
             social: {
                 supplyAndServices: [
                     {
-                        name: 'test',
+                        name: 'Generelle Infrastruktur',
                         value: randomNumber()
                     }
                 ],
                 health: [
                     {
-                        name: 'test',
+                        name: 'Gesundheitsversorgung',
                         value: randomNumber()
                     }
                 ],
                 qualityOfLiving: [
                     {
-                        name: 'test',
+                        name: 'Lebensqualität',
                         value: randomNumber()
                     }
                 ],
                 security: [
                     {
-                        name: 'test',
+                        name: 'Sicherheir gemessen an Verbrechen',
                         value: randomNumber()
                     }
                 ],
                 socialSupportAndSolidarity: [
                     {
-                        name: 'test',
+                        name: 'Solidaritätsgrad',
                         value: randomNumber()
                     }
                 ],
                 equalityAndIntegration: [
                     {
-                        name: 'test',
+                        name: 'Eingliederungsgrad',
                         value: randomNumber()
                     }
                 ],
                 leisureTimeOffers: [
                     {
-                        name: 'test',
+                        name: 'Freizeitangebote',
                         value: randomNumber()
                     }
                 ],
                 mobility: [
                     {
-                        name: 'test',
+                        name: 'Öffentlicher Verkehr',
                         value: randomNumber()
                     }
                 ],
                 education: [
                     {
-                        name: 'test',
+                        name: 'Qualität der Gymnasien',
                         value: randomNumber()
                     }
                 ]
@@ -252,37 +252,37 @@ export const mockData: Municipality = {
             economy: {
                 wageAndCostOfLiving: [
                     {
-                        name: 'test',
+                        name: 'Wohnungspreise',
                         value: randomNumber()
                     }
                 ],
                 occupation: [
                     {
-                        name: 'test',
+                        name: 'Berufsauswahl',
                         value: randomNumber()
                     }
                 ],
                 professionals: [
                     {
-                        name: 'test',
+                        name: 'Spezialisierungen',
                         value: randomNumber()
                     }
                 ],
                 economicalResiliance: [
                     {
-                        name: 'test',
+                        name: 'Ökonomische Stabilität',
                         value: randomNumber()
                     }
                 ],
                 innovation: [
                     {
-                        name: 'test',
+                        name: 'Innovationsgrad',
                         value: randomNumber()
                     }
                 ],
                 attractivenessForEmployers: [
                     {
-                        name: 'test',
+                        name: 'Benefits für Arbeitnehmende',
                         value: randomNumber()
                     }
                 ]
