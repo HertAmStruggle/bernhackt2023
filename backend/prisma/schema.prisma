@@ -10,9 +10,93 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Municipality {
+  id                 Int          @id @default(autoincrement())
+  municipalityName   String
+  surveyParticipants Int
+  facts              SectorData   @relation(name: "FactsRelation", fields: [factsId], references: [id])
+  factsId            Int          @unique
+  surveys            SectorData[] @relation(name: "SurveysRelation")
+}
+
+model SectorData {
+  id          Int            @id @default(autoincrement())
+  facts       Municipality?  @relation(name: "FactsRelation")
+  factsId     Int
+  environment Environment?
+  social      Social?        @relation(map: "social")
+  economy     Economy?       @relation(map: "economy")
+  surveys     Municipality[] @relation(name: "SurveysRelation")
+}
+
+model Environment {
+  id                       Int         @id @default(autoincrement())
+  sectorData               SectorData  @relation(fields: [sectorDataId], references: [id])
+  sectorDataId             Int         @unique
+  biodiversity             Indicator[] @relation(name: "BiodiversityRelation")
+  climate                  Indicator[] @relation(name: "ClimateRelation")
+  energy                   Indicator[] @relation(name: "EnergyRelation")
+  air                      Indicator[] @relation(name: "AirRelation")
+  water                    Indicator[] @relation(name: "WaterRelation")
+  soil                     Indicator[] @relation(name: "SoilRelation")
+  environmentalConsumption Indicator[] @relation(name: "EnvironmentalConsumptionRelation")
+}
+
+model Social {
+  id                         Int         @id @default(autoincrement())
+  sectorData                 SectorData? @relation(fields: [sectorDataId], references: [id])
+  sectorDataId               Int         @unique
+  supplyAndServices          Indicator[] @relation(name: "SupplyAndServicesRelation")
+  health                     Indicator[] @relation(name: "HealthRelation")
+  qualityOfLiving            Indicator[] @relation(name: "QualityOfLivingRelation")
+  security                   Indicator[] @relation(name: "SecurityRelation")
+  socialSupportAndSolidarity Indicator[] @relation(name: "SocialSupportAndSolidarityRelation")
+  equalityAndIntegration     Indicator[] @relation(name: "EqualityAndIntegrationRelation")
+  leisureTimeOffers          Indicator[] @relation(name: "LeisureTimeOffersRelation")
+  mobility                   Indicator[] @relation(name: "MobilityRelation")
+  education                  Indicator[] @relation(name: "EducationRelation")
+}
+
+model Economy {
+  id                         Int         @id @default(autoincrement())
+  sectorData                 SectorData? @relation(fields: [sectorDataId], references: [id])
+  sectorDataId               Int         @unique
+  wageAndCostOfLiving        Indicator[] @relation(name: "WageAndCostOfLivingRelation")
+  occupation                 Indicator[] @relation(name: "OccupationRelation")
+  professionals              Indicator[] @relation(name: "ProfessionalsRelation")
+  economicalResiliance       Indicator[] @relation(name: "EconomicalResilianceRelation")
+  innovation                 Indicator[] @relation(name: "InnovationRelation")
+  attractivenessForEmployers Indicator[] @relation(name: "AttractivenessForEmployersRelation")
+}
+
 model Indicator {
-  indicatorID Int @default(autoincrement()) @id
-  name String
-  value Int
-  isSurvey Boolean
+  id                         Int          @id @default(autoincrement())
+  name                       String
+  value                      Float?
+  participants               Int?
+  environmentId              Int?
+  socialId                   Int?
+  economyId                  Int?
+  biodiversity               Environment? @relation(name: "BiodiversityRelation", fields: [environmentId], references: [id], map: "BiodiversityRelation")
+  climate                    Environment? @relation(name: "ClimateRelation", fields: [environmentId], references: [id], map: "ClimateRelation")
+  energy                     Environment? @relation(name: "EnergyRelation", fields: [environmentId], references: [id], map: "EnergyRelation")
+  air                        Environment? @relation(name: "AirRelation", fields: [environmentId], references: [id], map: "AirRelation")
+  water                      Environment? @relation(name: "WaterRelation", fields: [environmentId], references: [id], map: "WaterRelation")
+  soil                       Environment? @relation(name: "SoilRelation", fields: [environmentId], references: [id], map: "SoilRelation")
+  environmentalConsumption   Environment? @relation(name: "EnvironmentalConsumptionRelation", fields: [environmentId], references: [id], map: "EnvironmentalConsumptionRelation")
+  supplyAndServices          Social?      @relation(name: "SupplyAndServicesRelation", fields: [socialId], references: [id], map: "SupplyAndServicesRelation")
+  health                     Social?      @relation(name: "HealthRelation", fields: [socialId], references: [id], map: "HealthRelation")
+  qualityOfLiving            Social?      @relation(name: "QualityOfLivingRelation", fields: [socialId], references: [id], map: "QualityOfLivingRelation")
+  security                   Social?      @relation(name: "SecurityRelation", fields: [socialId], references: [id], map: "SecurityRelation")
+  socialSupportAndSolidarity Social?      @relation(name: "SocialSupportAndSolidarityRelation", fields: [socialId], references: [id], map: "SocialSupportAndSolidarityRelation")
+  equalityAndIntegration     Social?      @relation(name: "EqualityAndIntegrationRelation", fields: [socialId], references: [id], map: "EqualityAndIntegrationRelation")
+  leisureTimeOffers          Social?      @relation(name: "LeisureTimeOffersRelation", fields: [socialId], references: [id], map: "LeisureTimeOffersRelation")
+  mobility                   Social?      @relation(name: "MobilityRelation", fields: [socialId], references: [id], map: "MobilityRelation")
+  education                  Social?      @relation(name: "EducationRelation", fields: [socialId], references: [id], map: "EducationRelation")
+  wageAndCostOfLiving        Economy?     @relation(name: "WageAndCostOfLivingRelation", fields: [economyId], references: [id], map: "WageAndCostOfLivingRelation")
+  occupation                 Economy?     @relation(name: "OccupationRelation", fields: [economyId], references: [id], map: "OccupationRelation")
+  professionals              Economy?     @relation(name: "ProfessionalsRelation", fields: [economyId], references: [id], map: "ProfessionalsRelation")
+  economicalResiliance       Economy?     @relation(name: "EconomicalResilianceRelation", fields: [economyId], references: [id], map: "EconomicalResilianceRelation")
+  innovation                 Economy?     @relation(name: "InnovationRelation", fields: [economyId], references: [id], map: "InnovationRelation")
+  attractivenessForEmployers Economy?     @relation(name: "AttractivenessForEmployersRelation", fields: [economyId], references: [id], map: "AttractivenessForEmployersRelation")
 }
