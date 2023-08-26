@@ -50,9 +50,7 @@
 
       <q-card class="my-card">
         <router-link to="/umfrage">
-          <q-img
-            src="../../src/assets/undraw_umfrage.svg"
-          >
+          <q-img src="../../src/assets/undraw_umfrage.svg">
             <div class="absolute-bottom text-subtitle2 text-center">
               Umfrage
             </div>

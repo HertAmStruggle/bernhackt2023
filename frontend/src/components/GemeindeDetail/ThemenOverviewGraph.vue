@@ -6,7 +6,8 @@
     >
       <div
         v-if="
-          factIndicators[index]?.sector === props.sector && factIndicators[index]
+          factIndicators[index]?.sector === props.sector &&
+          factIndicators[index]
         "
       >
         <p>{{ factIndicators[index].name }}</p>

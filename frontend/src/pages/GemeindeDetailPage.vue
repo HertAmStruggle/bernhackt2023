@@ -43,6 +43,13 @@
         :municipality-data="municipalityData[0]"
       ></ThemenOverviewGraph>
     </section>
+
+    <section class="graph">
+      <ChartTest
+        :municipality-data="municipalityData[0]"
+        :sector="sector"
+      ></ChartTest>
+    </section>
   </div>
 </template>
 
@@ -52,6 +59,7 @@ import { useFetch } from '@vueuse/core';
 import type { Municipality, Sector } from 'src/data/interfaces';
 import { ref } from 'vue';
 import ThemenOverviewGraph from 'src/components/GemeindeDetail/ThemenOverviewGraph.vue';
+import ChartTest from 'src/components/GemeindeDetail/ChartTest.vue';
 
 const sector = ref<Sector>('environment');
 
