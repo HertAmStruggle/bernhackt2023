@@ -26,7 +26,7 @@ const props = defineProps({
   },
   rating: {
     type: Number,
-    default: 100,
+    default: 50,
   },
 });
 
