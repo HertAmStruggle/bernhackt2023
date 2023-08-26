@@ -51,7 +51,7 @@
       <q-card class="my-card">
         <router-link to="/umfrage">
           <q-img
-            src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Switzerland%2C_administrative_divisions_-_de_-_colored.svg"
+            src="../../src/assets/undraw_umfrage.svg"
           >
             <div class="absolute-bottom text-subtitle2 text-center">
               Umfrage
