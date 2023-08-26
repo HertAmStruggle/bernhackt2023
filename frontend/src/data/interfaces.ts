@@ -1,14 +1,10 @@
 export interface Municipality {
   id: string;
   name: string;
-  canton: Canton;
+  canton: string;
+  canton_abbreviation: string;
   survey_indicators: Indicator[];
   fact_indicators: Indicator[];
-}
-
-export interface Canton {
-  name: string;
-  abbreviation: string;
 }
 
 export interface Indicator {

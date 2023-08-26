@@ -97,7 +97,6 @@ function calculateSectorMean(sector: Sector, source: Source) {
   return Math.round((sum / amount) * 10) / 10;
 }
 
-//TODO: fix
 watch(
   source,
   (newSource) => {

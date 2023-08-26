@@ -22,6 +22,22 @@
             />
           </div>
         </q-linear-progress>
+        <q-linear-progress
+          v-if="indicator.value !== undefined"
+          size="30px"
+          :value="indicator.value / 10"
+          color="primary"
+          class="q-mt-sm"
+          rounded
+        >
+          <div class="absolute-full flex flex-center">
+            <q-badge
+              color="white"
+              text-color="black"
+              :label="`${indicator.value} / 10`"
+            />
+          </div>
+        </q-linear-progress>
       </div>
     </div>
   </div>
