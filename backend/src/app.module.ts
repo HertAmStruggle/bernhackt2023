@@ -3,10 +3,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MunicipalityController } from './municipality/municipality.controller';
 import { MunicipalityService } from './municipality/municipality.service';
+import { PrismaService } from './prisma/prisma.service';
 
 @Module({
   imports: [],
   controllers: [AppController, MunicipalityController],
-  providers: [AppService, MunicipalityService],
+  providers: [AppService, MunicipalityService, PrismaService],
 })
 export class AppModule {}
