@@ -290,6 +290,6 @@ export const mockData: Municipality = {
     }
 }
 
-function randomNumber() {
+export function randomNumber() {
     return Math.floor(Math.random() * 11)
 }
