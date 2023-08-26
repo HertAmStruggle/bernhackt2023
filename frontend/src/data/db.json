@@ -1,128 +1,128 @@
 {
   "municipalities": [
-  {
-    "id": "1",
-    "name": "Biel/Bienne",
-    "canton": {
-      "name": "Bern",
-      "abbreviation": "BE"
-    },
-    "survey_indicators": [
-      {
-        "name": "Luftqualität",
-        "value": 7,
-        "subject": "Luft",
-        "sector": "environment"
+    {
+      "id": "1",
+      "name": "Biel/Bienne",
+      "canton": {
+        "name": "Bern",
+        "abbreviation": "BE"
       },
-      {
-        "name": "Ökologischer Fussabdruck",
-        "value": 5,
-        "subject": "Ökologischer Verbrauch",
-        "sector": "environment"
-      },
-      {
-        "name": "Strom-Mix",
-        "value": 9,
-        "subject": "Energie",
-        "sector": "environment"
-      },
+      "survey_indicators": [
+        {
+          "name": "Luftqualität",
+          "value": 7,
+          "subject": "Luft",
+          "sector": "environment"
+        },
+        {
+          "name": "Ökologischer Fussabdruck",
+          "value": 5,
+          "subject": "Ökologischer Verbrauch",
+          "sector": "environment"
+        },
+        {
+          "name": "Strom-Mix",
+          "value": 9,
+          "subject": "Energie",
+          "sector": "environment"
+        },
 
-      {
-        "name": "Spitalqualität",
-        "value": 8,
-        "subject": "Gesundheit",
-        "sector": "social"
-      },
-      {
-        "name": "Chancengleichheit",
-        "value": 5,
-        "subject": "Integration und Gleichstellung",
-        "sector": "social"
-      },
-      {
-        "name": "Öffentlicher Verkehr",
-        "value": 7,
-        "subject": "Mobilität",
-        "sector": "social"
-      },
+        {
+          "name": "Spitalqualität",
+          "value": 8,
+          "subject": "Gesundheit",
+          "sector": "social"
+        },
+        {
+          "name": "Chancengleichheit",
+          "value": 5,
+          "subject": "Integration und Gleichstellung",
+          "sector": "social"
+        },
+        {
+          "name": "Öffentlicher Verkehr",
+          "value": 7,
+          "subject": "Mobilität",
+          "sector": "social"
+        },
 
-      {
-        "name": "Mietkosten",
-        "value": 10,
-        "subject": "Lohn und Lebenskosten",
-        "sector": "economy"
-      },
-      {
-        "name": "Verfügbare Stellen",
-        "value": 6,
-        "subject": "Attraktivität für Arbeitnehmende",
-        "sector": "economy"
-      },
-      {
-        "name": "Lohngleichheit",
-        "value": 9,
-        "subject": "Lohn und Lebenskosten",
-        "sector": "economy"
-      }
-    ],
-    "fact_indicators": [
-      {
-        "name": "Luftqualität",
-        "value": 4,
-        "subject": "Luft",
-        "sector": "environment"
-      },
-      {
-        "name": "Ökologischer Fussabdruck",
-        "value": 5,
-        "subject": "Ökologischer Verbrauch",
-        "sector": "environment"
-      },
-      {
-        "name": "Strom-Mix",
-        "value": 7,
-        "subject": "Energie",
-        "sector": "environment"
-      },
+        {
+          "name": "Mietkosten",
+          "value": 10,
+          "subject": "Lohn und Lebenskosten",
+          "sector": "economy"
+        },
+        {
+          "name": "Verfügbare Stellen",
+          "value": 6,
+          "subject": "Attraktivität für Arbeitnehmende",
+          "sector": "economy"
+        },
+        {
+          "name": "Lohngleichheit",
+          "value": 9,
+          "subject": "Lohn und Lebenskosten",
+          "sector": "economy"
+        }
+      ],
+      "fact_indicators": [
+        {
+          "name": "Luftqualität",
+          "value": 4,
+          "subject": "Luft",
+          "sector": "environment"
+        },
+        {
+          "name": "Ökologischer Fussabdruck",
+          "value": 5,
+          "subject": "Ökologischer Verbrauch",
+          "sector": "environment"
+        },
+        {
+          "name": "Strom-Mix",
+          "value": 7,
+          "subject": "Energie",
+          "sector": "environment"
+        },
 
-      {
-        "name": "Spitalqualität",
-        "value": 3,
-        "subject": "Gesundheit",
-        "sector": "social"
-      },
-      {
-        "name": "Chancengleichheit",
-        "value": 5,
-        "subject": "Integration und Gleichstellung",
-        "sector": "social"
-      },
-      {
-        "name": "Öffentlicher Verkehr",
-        "value": 9,
-        "subject": "Mobilität",
-        "sector": "social"
-      },
+        {
+          "name": "Spitalqualität",
+          "value": 3,
+          "subject": "Gesundheit",
+          "sector": "social"
+        },
+        {
+          "name": "Chancengleichheit",
+          "value": 5,
+          "subject": "Integration und Gleichstellung",
+          "sector": "social"
+        },
+        {
+          "name": "Öffentlicher Verkehr",
+          "value": 9,
+          "subject": "Mobilität",
+          "sector": "social"
+        },
 
-      {
-        "name": "Mietkosten",
-        "value": 7,
-        "subject": "Lohn und Lebenskosten",
-        "sector": "economy"
-      },
-      {
-        "name": "Verfügbare Stellen",
-        "value": 4,
-        "subject": "Attraktivität für Arbeitnehmende",
-        "sector": "economy"
-      },
-      {
-        "name": "Lohngleichheit",
-        "value": 8,
-        "subject": "Lohn und Lebenskosten",
-        "sector": "economy"
-      }
-    ]
-  }
-]
+        {
+          "name": "Mietkosten",
+          "value": 7,
+          "subject": "Lohn und Lebenskosten",
+          "sector": "economy"
+        },
+        {
+          "name": "Verfügbare Stellen",
+          "value": 4,
+          "subject": "Attraktivität für Arbeitnehmende",
+          "sector": "economy"
+        },
+        {
+          "name": "Lohngleichheit",
+          "value": 8,
+          "subject": "Lohn und Lebenskosten",
+          "sector": "economy"
+        }
+      ]
+    }
+  ]
 }

@@ -1,8 +1,8 @@
 <template>
   <div v-if="isFetching">...Loading</div>
-  <div v-else-if="!error && municipalityData" class="main-container">
+  <div v-else-if="!error && municipalityData?.[0]" class="main-container">
     <section class="title">
-      <h2>{{ municipalityData.meta.municipalityName }}</h2>
+      <h2>{{ municipalityData[0].name }}</h2>
       <q-avatar square>
         <img
           src="https://upload.wikimedia.org/wikipedia/commons/4/47/Wappen_Bern_matt.svg"
@@ -10,25 +10,25 @@
       </q-avatar>
     </section>
 
-    <q-toggle
-      :label="source"
-      color="primary"
-      false-value="survey"
-      true-value="facts"
-      v-model="source"
-      right-label
-      size="md"
-    />
-
     <section class="themen-summary">
       <BereichScoreGraph title="Umwelt" :rating="environmentSectorMean" />
       <BereichScoreGraph title="Soziales" :rating="socialSectorMean" />
       <BereichScoreGraph title="Wirtschaft" :rating="economySectorMean" />
     </section>
 
+    <q-toggle
+      :label="source"
+      color="primary"
+      false-value="fact_indicators"
+      true-value="survey_indicators"
+      v-model="source"
+      right-label
+      size="md"
+    />
+
     <section class="tabs">
       <q-btn-toggle
-        v-model="bereich"
+        v-model="sector"
         spread
         class="custom-toggle"
         no-caps
@@ -45,15 +45,13 @@
       />
     </section>
 
-    <section class="checkboxes">
-
-    </section>
+    <section class="checkboxes"></section>
 
     <section class="themen">
       <ThemenOverviewGraph
-        :bereich="bereich"
-        :municipality-data="municipalityData"
-        :type="source"
+        :source="source"
+        :sector="sector"
+        :municipality-data="municipalityData[0]"
       ></ThemenOverviewGraph>
     </section>
   </div>
@@ -66,8 +64,8 @@ import type { Municipality, Sector, Source } from 'src/data/interfaces';
 import { ref, watch } from 'vue';
 import ThemenOverviewGraph from 'src/components/GemeindeDetail/ThemenOverviewGraph.vue';
 
-const bereich = ref<Sector>('environment');
-const source = ref<Source>('facts');
+const sector = ref<Sector>('environment');
+const source = ref<Source>('fact_indicators');
 
 const socialSectorMean = ref(0);
 const environmentSectorMean = ref(0);
@@ -77,46 +75,35 @@ const {
   error,
   isFetching,
   data: municipalityData,
-} = await useFetch('http://localhost:3000/api/municipality')
+} = await useFetch('http://localhost:3000/municipalities')
   .get()
-  .json<Municipality>();
+  .json<Municipality[]>();
 
-console.log(municipalityData.value);
-
-/**
- * This function calculates the mean for one sector
- * @param type If the data should origin from factual data or survey data
- * @param sector One of the three sectors
- */
-function calculateSectorMean(source: Source, sector: Sector) {
+function calculateSectorMean(sector: Sector, source: Source) {
   let sum = 0;
   let amount = 0;
 
-  if (municipalityData.value?.[source][sector]) {
-    console.log(municipalityData.value?.[source][sector]);
-    for (const subjects of Object.values(
-      municipalityData.value?.[source][sector]
-    )) {
-      for (const indicator of subjects) {
-        if (indicator.value !== undefined) {
-          console.log(indicator);
-          amount++;
-          sum += indicator.value;
-        }
-      }
+  //TODO: fix
+  console.log(municipalityData.value?.[0][source]);
+  municipalityData.value?.[0][source].forEach((indicator) => {
+    if (indicator.sector === sector) {
+      sum = sum + indicator.value;
+      amount++;
     }
-  }
+  });
+
   console.log(`sum: ${sum}`);
   console.log(`amount: ${amount}`);
   return Math.round((sum / amount) * 10) / 10;
 }
 
+//TODO: fix
 watch(
   source,
   (newSource) => {
-    economySectorMean.value = calculateSectorMean(newSource, 'economy');
-    socialSectorMean.value = calculateSectorMean(newSource, 'social');
-    environmentSectorMean.value = calculateSectorMean(newSource, 'environment');
+    socialSectorMean.value = calculateSectorMean('social', newSource);
+    environmentSectorMean.value = calculateSectorMean('environment', newSource);
+    economySectorMean.value = calculateSectorMean('economy', newSource);
   },
   { immediate: true }
 );

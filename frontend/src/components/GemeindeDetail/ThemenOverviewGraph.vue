@@ -1,8 +1,10 @@
 <template>
   <div>
     <div
-      v-for="(thema, index) in Object.values(props.municipalityData[props.type][props.bereich])" :key="index">
-      <div v-for="(indicator, index) in thema" :key="index">
+      v-for="indicator in props.municipalityData[source]"
+      :key="indicator.name"
+    >
+      <div v-if="indicator.sector === props.sector">
         <p>{{ indicator.name }}</p>
         <q-linear-progress
           v-if="indicator.value !== undefined"
@@ -29,9 +31,9 @@
 import { Municipality, Sector, Source } from 'src/data/interfaces';
 
 const props = defineProps<{
-  bereich: Sector;
+  source: Source;
+  sector: Sector;
   municipalityData: Municipality;
-  type: Source;
 }>();
 </script>
 

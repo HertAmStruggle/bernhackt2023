@@ -6,13 +6,16 @@
       alt="Character Image"
     />
 
-    <h1> SwissCityStats </h1>
+    <h1>SwissCityStats</h1>
     <div class="text-body1">
-      Erkunde Schweizer Gemeinden mit datenbasierten Einblicken:
-      Tauche ein in die Essenz der urbanen und ländlichen Zentren der Schweiz.
-      Unsere Plattform präsentiert ein vielfältiges Spektrum an Daten, das für jede Gemeinde sorgfältig visualisiert wird.
-      Ganz gleich, ob du Forscher, Gemeindebegeisterter oder einfach neugierig bist – unsere Tools ermöglichen es dir, Demografie, Wirtschaft und vieles mehr miteinander zu vergleichen.
-      Entdecke gemeinsam mit uns die Geschichten, die das Gemeindebild der Schweiz zeichnen.
+      Erkunde Schweizer Gemeinden mit datenbasierten Einblicken: Tauche ein in
+      die Essenz der urbanen und ländlichen Zentren der Schweiz. Unsere
+      Plattform präsentiert ein vielfältiges Spektrum an Daten, das für jede
+      Gemeinde sorgfältig visualisiert wird. Ganz gleich, ob du Forscher,
+      Gemeindebegeisterter oder einfach neugierig bist – unsere Tools
+      ermöglichen es dir, Demografie, Wirtschaft und vieles mehr miteinander zu
+      vergleichen. Entdecke gemeinsam mit uns die Geschichten, die das
+      Gemeindebild der Schweiz zeichnen.
     </div>
     <q-form class="searchbar">
       <q-select
@@ -36,7 +39,8 @@
       <q-card class="my-card">
         <router-link to="/gemeinden">
           <q-img
-            src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Switzerland%2C_administrative_divisions_-_de_-_colored.svg">
+            src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Switzerland%2C_administrative_divisions_-_de_-_colored.svg"
+          >
             <div class="absolute-bottom text-subtitle2 text-center">
               Alle Gemeinden
             </div>
@@ -47,7 +51,8 @@
       <q-card class="my-card">
         <router-link to="/umfrage">
           <q-img
-            src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Switzerland%2C_administrative_divisions_-_de_-_colored.svg">
+            src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Switzerland%2C_administrative_divisions_-_de_-_colored.svg"
+          >
             <div class="absolute-bottom text-subtitle2 text-center">
               Umfrage
             </div>
@@ -59,65 +64,75 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from 'vue';
-import {useRouter} from 'vue-router';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
 const loadingFlag = ref(false);
-const citySearch = ref<null | {label: string, county: string}>(null);
+const citySearch = ref<null | { label: string; county: string }>(null);
 
 const data = [
   {
     label: 'Biu',
-    county: 'Bern'
+    county: 'Bern',
   },
   {
     label: 'Bärn',
-    county: 'Bern'
+    county: 'Bern',
   },
   {
     label: 'Züri',
-    county: 'Zürich'
+    county: 'Zürich',
   },
   {
     label: 'Gänf',
-    county: 'Genf'
+    county: 'Genf',
   },
   {
     label: 'Basu',
-    county: 'Basel-Stadt'
+    county: 'Basel-Stadt',
   },
-]
+];
 
-const cities = ref(data)
+const cities = ref(data);
 
-function filterFn (val: string, update: (arg0: { (): void; (): void; }) => void) {
+function filterFn(val: string, update: (arg0: { (): void; (): void }) => void) {
   if (val === '') {
     update(() => {
-      cities.value = data
+      cities.value = data;
 
       // here you have access to "ref" which
       // is the Vue reference of the QSelect
-    })
-    return
+    });
+    return;
   }
 
   update(() => {
-    const needle = val.toLowerCase()
-    cities.value = data.filter(v => v.label.toLowerCase().indexOf(needle) > -1)
-    if (cities.value.length == 1){
-      citySearch.value = {label: cities.value[0].label, county: cities.value[0].county}
-      console.log({label: cities.value[0].label, county: cities.value[0].county})
+    const needle = val.toLowerCase();
+    cities.value = data.filter(
+      (v) => v.label.toLowerCase().indexOf(needle) > -1
+    );
+    if (cities.value.length == 1) {
+      citySearch.value = {
+        label: cities.value[0].label,
+        county: cities.value[0].county,
+      };
+      console.log({
+        label: cities.value[0].label,
+        county: cities.value[0].county,
+      });
     }
-  })
+  });
 }
 
 async function searchForCity() {
-  console.log(citySearch.value)
-  if(citySearch.value){
-    await router.push(`/gemeinden/${citySearch.value.label + citySearch.value.county}`);
-    console.log(citySearch.value.label)
+  console.log(citySearch.value);
+  if (citySearch.value) {
+    await router.push(
+      `/gemeinden/${citySearch.value.label + citySearch.value.county}`
+    );
+    console.log(citySearch.value.label);
   }
 }
 </script>
@@ -148,6 +163,6 @@ h1 {
 
 .searchbar {
   margin-top: 2rem;
-  margin-bottom: 3rem
+  margin-bottom: 3rem;
 }
 </style>
