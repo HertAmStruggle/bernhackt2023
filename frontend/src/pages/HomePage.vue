@@ -1,11 +1,5 @@
 <template>
-  <q-page>
-    <q-img
-      class="banner"
-      src="https://placehold.co/1920x240"
-      alt="Character Image"
-    />
-
+  <q-page style="margin-top: 0;">
     <h1>SwissCityStats</h1>
     <div class="text-body1">
       Erkunde Schweizer Gemeinden mit datenbasierten Einblicken: Tauche ein in

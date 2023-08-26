@@ -4,9 +4,7 @@
     <section class="title">
       <h2>{{ municipalityData[0].name }}</h2>
       <q-avatar square>
-        <img
-          :src="getFlagLink(municipalityData[0].canton)"
-        />
+        <img :src="getFlagLink(municipalityData[0].canton)" />
       </q-avatar>
     </section>
 
@@ -35,17 +33,19 @@
       />
     </section>
 
+    <section style="width: 50%;">
+      <SpiderChart
+      :municipality-data="municipalityData[0]"
+      :sector="sector"
+    ></SpiderChart>
+    </section>
+
     <section class="themen">
       <ThemenOverviewGraph
         :sector="sector"
         :municipality-data="municipalityData[0]"
       ></ThemenOverviewGraph>
     </section>
-
-    <ChartTest
-      :municipality-data="municipalityData[0]"
-      :sector="sector"
-    ></ChartTest>
   </div>
   <div v-else>...Something went wrong while fetching</div>
 </template>
@@ -56,7 +56,7 @@ import { useFetch } from '@vueuse/core';
 import type { Municipality, Sector } from 'src/data/interfaces';
 import { computed, ref, watch } from 'vue';
 import ThemenOverviewGraph from 'src/components/GemeindeDetail/ThemenOverviewGraph.vue';
-import ChartTest from 'src/components/GemeindeDetail/ChartTest.vue';
+import SpiderChart from 'src/components/GemeindeDetail/SpiderChart.vue';
 import { useRoute } from 'vue-router';
 import { getFlagLink } from 'src/data/functions';
 
@@ -84,14 +84,6 @@ const {
   data: municipalityData,
 } = await useFetch(apiURL).get().json<Municipality[]>();
 
-watch(
-  apiURL,
-  () => {
-    getData();
-  },
-  { immediate: true }
-);
-
 async function getData() {
   await execute();
 
@@ -102,6 +94,14 @@ async function getData() {
     economySectorMean.value = calculateSectorMean('economy');
   }
 }
+
+watch(
+  apiURL,
+  () => {
+    getData();
+  },
+  { immediate: true }
+);
 
 /**
  * Funktion um den Sektormittelwert zu berechnen

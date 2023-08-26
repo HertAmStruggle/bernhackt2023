@@ -17,7 +17,7 @@
 
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
       <q-list>
-        <q-item-label header> Titel Hier </q-item-label>
+        <q-item-label header> Navigation </q-item-label>
 
         <NavigationItemVue
           v-for="link in links"
