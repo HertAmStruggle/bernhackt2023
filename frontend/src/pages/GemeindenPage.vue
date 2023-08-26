@@ -6,6 +6,7 @@
         :loading="loadingFlag"
         type="text"
         v-model="citySearch"
+        debounce="500"
         label="Search for a City"
         filled
         lazy-rules
@@ -19,25 +20,18 @@
         <q-card
           style="padding: 10px; text-align: center"
         >
-          <q-img
-            style="width: 203px; height: 246px; object-fit: cover"
-            :src="getFlagLink(city.county)"
-          />
-          <div class="text-h2">
-            {{ city.name }}
-          </div>
-          <q-item clickable>
+          <q-item>
+            <q-item-section>
+              <div class="text-h2">
+                {{ city.name }}
+              </div>
+            </q-item-section>
+
             <q-item-section avatar>
               <q-img
                 style="width: 40px; object-fit: cover"
                 :src="getFlagLink(city.county)"
               />
-            </q-item-section>
-
-            <q-item-section>
-              <div class="text-h2">
-                {{ city.name }}
-              </div>
             </q-item-section>
           </q-item>
         </q-card>
@@ -54,7 +48,7 @@ import {computed, ref} from 'vue';
 const loadingFlag = ref(false);
 const citySearch = ref('');
 
-function getFlagLink(county){
+function getFlagLink(county) {
   switch (county) {
     case 'Aargau':
       return 'https://upload.wikimedia.org/wikipedia/commons/b/b5/Wappen_Aargau_matt.svg';
