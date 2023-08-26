@@ -47,9 +47,9 @@
         },
 
         {
-          "name": "Mietkosten",
+          "name": "Verfügbarkeit von Fachkräften",
           "value": 10,
-          "subject": "Lohn und Lebenskosten",
+          "subject": "Fachkräfte",
           "sector": "economy"
         },
         {
@@ -105,9 +105,9 @@
         },
 
         {
-          "name": "Mietkosten",
-          "value": 7,
-          "subject": "Lohn und Lebenskosten",
+          "name": "Verfügbarkeit von Fachkräften",
+          "value": 10,
+          "subject": "Fachkräfte",
           "sector": "economy"
         },
         {

@@ -44,12 +44,10 @@
       ></ThemenOverviewGraph>
     </section>
 
-    <section class="graph">
-      <ChartTest
-        :municipality-data="municipalityData[0]"
-        :sector="sector"
-      ></ChartTest>
-    </section>
+    <ChartTest
+      :municipality-data="municipalityData[0]"
+      :sector="sector"
+    ></ChartTest>
   </div>
 </template>
 
@@ -61,12 +59,19 @@ import { ref } from 'vue';
 import ThemenOverviewGraph from 'src/components/GemeindeDetail/ThemenOverviewGraph.vue';
 import ChartTest from 'src/components/GemeindeDetail/ChartTest.vue';
 
+/**
+ * Einer der 3 möglichen Bereiche der Daten
+ */
 const sector = ref<Sector>('environment');
 
+/**
+ * Variablen die für jeden Sektor den Durchschnitt darstellen (werden später berechnet)
+ */
 const socialSectorMean = ref(0);
 const environmentSectorMean = ref(0);
 const economySectorMean = ref(0);
 
+//Data fetching
 const {
   error,
   isFetching,
@@ -75,12 +80,13 @@ const {
   .get()
   .json<Municipality[]>();
 
+/**
+ * Funktion um den Sektormittelwert zu berechnen
+ * @param sector
+ */
 function calculateSectorMean(sector: Sector) {
   let sum = 0;
   let amount = 0;
-
-  //TODO: fix
-  console.log(municipalityData.value?.[0]);
   municipalityData.value?.[0].fact_indicators.forEach((indicator) => {
     if (indicator.sector === sector) {
       sum = sum + indicator.value;
@@ -94,12 +100,10 @@ function calculateSectorMean(sector: Sector) {
       amount++;
     }
   });
-
-  console.log(`sum: ${sum}`);
-  console.log(`amount: ${amount}`);
   return Math.round((sum / amount) * 10) / 10;
 }
 
+//Datenzuweisung
 socialSectorMean.value = calculateSectorMean('social');
 environmentSectorMean.value = calculateSectorMean('environment');
 economySectorMean.value = calculateSectorMean('economy');
