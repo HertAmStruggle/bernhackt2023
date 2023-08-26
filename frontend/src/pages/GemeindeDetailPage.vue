@@ -16,11 +16,22 @@
     </section>
 
     <section class="tabs">
-      <q-tabs v-model="bereich" class="text-teal" align="justify">
-      <q-tab name="umwelt" icon="compost" label="Umwelt" />
-      <q-tab name="soziales" icon="groups" label="Soziales" />
-      <q-tab name="wirtschaft" icon="trending_up" label="Wirtschaft" />
-    </q-tabs>
+      <q-btn-toggle
+        v-model="bereich"
+        spread
+        class="custom-toggle"
+        no-caps
+        rounded
+        elevated
+        toggle-color="primary"
+        color="white"
+        text-color="primary"
+        :options="[
+          {label: 'Umwelt', value: 'umwelt'},
+          {label: 'Soziales', value: 'soziales'},
+          {label: 'Wirtshaft', value: 'wirtschaft'}
+        ]"
+      />
     </section>
   </div>
 </template>
@@ -37,6 +48,7 @@ const bereich = ref('umwelt');
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 1rem;
 }
 
 .title {
@@ -52,11 +64,19 @@ const bereich = ref('umwelt');
   flex-direction: row;
   align-items: center;
   justify-content: space-evenly;
-  gap: 3rem;
+  gap: 2rem;
+  width: 100%;
+}
+
+.tabs {
   width: 100%;
 }
 
 .title h2 {
   margin: 1rem;
+}
+
+.custom-toggle {
+  border: 1px solid #027be3
 }
 </style>

@@ -36,8 +36,6 @@ const circleColor = computed(() => {
   else {
     return 'negative'
   }
-
-  return author.books.length > 0 ? 'Yes' : 'No'
 })
 
 </script>
@@ -46,6 +44,7 @@ const circleColor = computed(() => {
 .main {
   display: flex;
   align-items: center;
+  justify-content: center;
   flex-direction: column;
 }
 
