@@ -12,10 +12,6 @@ let started = ref(false)
 function startPoll() {
   started.value = true
 }
-
-function submitForm() {
-  console.log('submitting')
-}
 </script>
 
 <template>
@@ -45,13 +41,6 @@ function submitForm() {
       </div>
     </div>
 
-    <q-btn
-      class='q-mb-xl'
-      color='primary'
-      :label='!started ? "Starte die Umfrage" : "Speichern und Abschicken"'
-      @click='startPoll()'
-    />
-
     <div v-if=started>
       <q-form>
         <div v-for='item in sectors' :key='item.sector' class='q-mb-lg'>
@@ -68,8 +57,10 @@ function submitForm() {
             </div>
 
           </q-expansion-item>
+
         </q-card>
       </div>
+      <q-btn color="primary" type="Submit">Umfrage Abschicken</q-btn>
       </q-form>
     </div>
   </div>
