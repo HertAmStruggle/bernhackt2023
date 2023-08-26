@@ -1,8 +1,8 @@
 <template>
   <div v-if="isFetching">...Loading</div>
-  <div v-else class="main-container">
+  <div v-else-if="!error && municipalityData" class="main-container">
     <section class="title">
-      <h2>Biel/Bienne</h2>
+      <h2>{{ municipalityData.meta.municipalityName }}</h2>
       <q-avatar square>
         <img
           src="https://upload.wikimedia.org/wikipedia/commons/4/47/Wappen_Bern_matt.svg"
@@ -11,9 +11,15 @@
     </section>
 
     <section class="themen-summary">
-      <BereichScoreGraph title="Umwelt" :rating="7" />
-      <BereichScoreGraph title="Soziales" :rating="4" />
-      <BereichScoreGraph title="Wirtshaft" :rating="9" />
+      <BereichScoreGraph
+        title="Umwelt"
+        :rating="factorMeans.get('environment')"
+      />
+      <BereichScoreGraph title="Soziales" :rating="factorMeans.get('social')" />
+      <BereichScoreGraph
+        title="Wirtshaft"
+        :rating="factorMeans.get('economy')"
+      />
     </section>
 
     <section class="tabs">
@@ -34,33 +40,48 @@
         ]"
       />
     </section>
-    {{ JSON.stringify(municipalityData) }}
+
+    <section class="themen">
+      <ThemenOverviewGraph
+        :bereich="bereich"
+        :municipality-data="municipalityData"
+        :type="type"
+      ></ThemenOverviewGraph>
+    </section>
   </div>
 </template>
 
 <script setup lang="ts">
 import BereichScoreGraph from 'src/components/GemeindeDetail/BereichScoreGraph.vue';
 import { useFetch } from '@vueuse/core';
-import type { Municipality } from 'src/data/interfaces';
-import { ref } from 'vue';
+import type { Municipality, Sector, Source } from 'src/data/interfaces';
+import { computed, ref } from 'vue';
+import ThemenOverviewGraph from 'src/components/GemeindeDetail/ThemenOverviewGraph.vue';
 
 //TODO: seperate facts and survey
-const bereich = ref('environment');
+const bereich = ref<Sector>('environment');
+const type = ref<Source>('facts');
 
-const { isFetching, data: municipalityData } = await useFetch(
-  'http://localhost:3000/api/municipality'
-)
+const {
+  error,
+  isFetching,
+  data: municipalityData,
+} = await useFetch('http://localhost:3000/api/municipality')
   .get()
   .json<Municipality>();
 
-function calculateSectorMean(
-  type: 'facts' | 'survey',
-  sector: 'economy' | 'social' | 'environment'
-) {
+console.log(municipalityData.value);
+
+/**
+ * This function calculates the mean for one sector
+ * @param type If the data should origin from factual data or survey data
+ * @param sector One of the three sectors
+ */
+function calculateSectorMean(source: Source, sector: Sector) {
   let sum = 0;
   let amount = 0;
 
-  if (municipalityData.value?.[type][sector]) {
+  if (municipalityData.value?.[source][sector]) {
     console.log(municipalityData.value?.facts[sector]);
     for (const subjects of Object.values(
       municipalityData.value?.facts[sector]
@@ -76,9 +97,16 @@ function calculateSectorMean(
   }
   console.log(`sum: ${sum}`);
   console.log(`amount: ${amount}`);
-  return sum / amount;
+  return Math.round((sum / amount) * 10) / 10;
 }
-console.log(calculateSectorMean('facts', 'economy'));
+
+const factorMeans = computed(() => {
+  let mapOutput = new Map<Sector, number>();
+  mapOutput.set('economy', calculateSectorMean('facts', 'economy'));
+  mapOutput.set('social', calculateSectorMean('facts', 'social'));
+  mapOutput.set('environment', calculateSectorMean('facts', 'environment'));
+  return mapOutput;
+});
 </script>
 
 <style>
@@ -104,6 +132,10 @@ console.log(calculateSectorMean('facts', 'economy'));
   justify-content: space-evenly;
   gap: 2rem;
   width: 100%;
+}
+
+.themen {
+  width: 90%;
 }
 
 .tabs {

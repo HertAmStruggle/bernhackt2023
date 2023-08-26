@@ -6,7 +6,6 @@
         :loading="loadingFlag"
         type="text"
         v-model="citySearch"
-        debounce="500"
         label="Search for a City"
         filled
         lazy-rules
@@ -17,33 +16,36 @@
   <div class="cities">
     <div v-for="city in filteredCities" :key="city.name">
       <router-link :to="'/gemeinde/' + city.name + city.county">
-        <q-card
-          style="padding: 10px; text-align: center"
-        >
-          <q-item>
-            <q-item-section>
-              <div class="text-h2">
-                {{ city.name }}
-              </div>
-            </q-item-section>
-
+        <q-card style="padding: 10px; text-align: center">
+          <q-img
+            style="width: 203px; height: 246px; object-fit: cover"
+            :src="getFlagLink(city.county)"
+          />
+          <div class="text-h2">
+            {{ city.name }}
+          </div>
+          <q-item clickable>
             <q-item-section avatar>
               <q-img
                 style="width: 40px; object-fit: cover"
                 :src="getFlagLink(city.county)"
               />
             </q-item-section>
+
+            <q-item-section>
+              <div class="text-h2">
+                {{ city.name }}
+              </div>
+            </q-item-section>
           </q-item>
         </q-card>
       </router-link>
     </div>
   </div>
-
 </template>
 
 <script setup>
-
-import {computed, ref} from 'vue';
+import { computed, ref } from 'vue';
 
 const loadingFlag = ref(false);
 const citySearch = ref('');
@@ -110,34 +112,31 @@ function getFlagLink(county) {
 const cities = [
   {
     name: 'Biu',
-    county: 'Bern'
+    county: 'Bern',
   },
   {
     name: 'Bärn',
-    county: 'Bern'
+    county: 'Bern',
   },
   {
     name: 'Züri',
-    county: 'Zürich'
+    county: 'Zürich',
   },
   {
     name: 'Gänf',
-    county: 'Genf'
+    county: 'Genf',
   },
   {
     name: 'Basu',
-    county: 'Basel-Stadt'
+    county: 'Basel-Stadt',
   },
-]
+];
 
 const filteredCities = computed(() => {
   return cities.filter((city) =>
-    city
-      .name?.toLowerCase()
-      .includes(citySearch.value.toLowerCase())
+    city.name?.toLowerCase().includes(citySearch.value.toLowerCase())
   );
 });
-
 </script>
 <style>
 .cities {

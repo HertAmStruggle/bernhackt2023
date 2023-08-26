@@ -44,3 +44,6 @@ export interface Indicator {
   value: number | undefined;
   participants?: number;
 }
+
+export type Source = 'facts' | 'survey';
+export type Sector = 'social' | 'environment' | 'economy';
