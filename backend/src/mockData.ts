@@ -1,7 +1,6 @@
 import {Municipality} from "./interfaces";
 
-export function mockData(): Municipality {
-    return {
+export const mockData: Municipality = {
         meta: {
             id: 1,
             municipalityName: 'Paradise',
@@ -289,7 +288,6 @@ export function mockData(): Municipality {
                 ]
             }
         }
-    }
 }
 
 export function randomNumber() {
