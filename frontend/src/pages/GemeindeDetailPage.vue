@@ -2,7 +2,7 @@
   <div v-if="isFetching">...Loading</div>
   <div v-else-if="!error && municipalityData" class="main-container">
     <section class="title">
-      <h2>Biel/Bienne</h2>
+      <h2>{{ municipalityData.meta.municipalityName }}</h2>
       <q-avatar square>
         <img
           src="https://upload.wikimedia.org/wikipedia/commons/4/47/Wappen_Bern_matt.svg"
@@ -42,12 +42,34 @@
     </section>
 
     <section class="themen">
-      <div
-        v-for="(thema, index) in municipalityData.facts.economy"
-        :key="index"
-      >
-        <div v-for="(indicator, index) in thema" :key="index">
-          <p>{{ indicator.name }}</p>
+      <div v-if="bereich === 'economy'">
+        <div
+          v-for="(thema, index) in municipalityData[type][bereich]"
+          :key="index"
+        >
+          <div v-for="(indicator, index) in thema" :key="index">
+            <p>{{ indicator.name }}</p>
+          </div>
+        </div>
+      </div>
+      <div v-else-if="bereich === 'social'">
+        <div
+          v-for="(thema, index) in municipalityData[type].social"
+          :key="index"
+        >
+          <div v-for="(indicator, index) in thema" :key="index">
+            <p>{{ indicator.name }}</p>
+          </div>
+        </div>
+      </div>
+      <div v-else-if="bereich === 'environment'">
+        <div
+          v-for="(thema, index) in municipalityData[type].environment"
+          :key="index"
+        >
+          <div v-for="(indicator, index) in thema" :key="index">
+            <p>{{ indicator.name }}</p>
+          </div>
         </div>
       </div>
     </section>
@@ -61,7 +83,8 @@ import type { Municipality } from 'src/data/interfaces';
 import { computed, ref } from 'vue';
 
 //TODO: seperate facts and survey
-const bereich = ref('environment');
+const bereich = ref<'economy' | 'social' | 'environment'>('environment');
+const type = ref<'survey' | 'facts'>('facts');
 
 const {
   error,
