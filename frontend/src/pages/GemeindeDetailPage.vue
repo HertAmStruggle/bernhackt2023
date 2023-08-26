@@ -1,5 +1,6 @@
 <template>
-  <div class="main-container">
+  <div v-if="isFetching">...Loading</div>
+  <div v-else class="main-container">
     <section class="title">
       <h2>Biel/Bienne</h2>
       <q-avatar square>
@@ -27,20 +28,57 @@
         color="white"
         text-color="primary"
         :options="[
-          {label: 'Umwelt', value: 'umwelt'},
-          {label: 'Soziales', value: 'soziales'},
-          {label: 'Wirtshaft', value: 'wirtschaft'}
+          { label: 'Umwelt', value: 'environment' },
+          { label: 'Soziales', value: 'social' },
+          { label: 'Wirtshaft', value: 'economy' },
         ]"
       />
     </section>
+    {{ JSON.stringify(municipalityData) }}
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue';
+<script setup lang="ts">
 import BereichScoreGraph from 'src/components/GemeindeDetail/BereichScoreGraph.vue';
+import { useFetch } from '@vueuse/core';
+import type { Municipality } from 'src/data/interfaces';
+import { ref } from 'vue';
 
-const bereich = ref('umwelt');
+//TODO: seperate facts and survey
+const bereich = ref('environment');
+
+const { isFetching, data: municipalityData } = await useFetch(
+  'http://localhost:3000/api/municipality'
+)
+  .get()
+  .json<Municipality>();
+
+function calculateSectorMean(
+  type: 'facts' | 'survey',
+  sector: 'economy' | 'social' | 'environment'
+) {
+  let sum = 0;
+  let amount = 0;
+
+  if (municipalityData.value?.[type][sector]) {
+    console.log(municipalityData.value?.facts[sector]);
+    for (const subjects of Object.values(
+      municipalityData.value?.facts[sector]
+    )) {
+      for (const indicator of subjects) {
+        if (indicator.value !== undefined) {
+          console.log(indicator);
+          amount++;
+          sum += indicator.value;
+        }
+      }
+    }
+  }
+  console.log(`sum: ${sum}`);
+  console.log(`amount: ${amount}`);
+  return sum / amount;
+}
+console.log(calculateSectorMean('facts', 'economy'));
 </script>
 
 <style>
@@ -77,6 +115,6 @@ const bereich = ref('umwelt');
 }
 
 .custom-toggle {
-  border: 1px solid #027be3
+  border: 1px solid #027be3;
 }
 </style>

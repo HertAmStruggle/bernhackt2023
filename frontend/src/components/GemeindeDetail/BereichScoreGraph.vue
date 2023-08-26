@@ -16,28 +16,30 @@
   </section>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
 
-
 const props = defineProps({
-  title: String,
-  rating: Number
-})
+  title: {
+    type: String,
+    default: '',
+  },
+  rating: {
+    type: Number,
+    default: 100,
+  },
+});
 
 const circleColor = computed(() => {
-
-  if(props.rating > 7) {
-    return 'positive'
+  if (props.rating > 7) {
+    return 'positive';
   }
   if (props.rating > 4) {
-    return 'warning'
+    return 'warning';
+  } else {
+    return 'negative';
   }
-  else {
-    return 'negative'
-  }
-})
-
+});
 </script>
 
 <style>
