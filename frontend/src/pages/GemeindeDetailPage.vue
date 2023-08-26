@@ -58,6 +58,7 @@ import type { Municipality, Sector } from 'src/data/interfaces';
 import { ref } from 'vue';
 import ThemenOverviewGraph from 'src/components/GemeindeDetail/ThemenOverviewGraph.vue';
 import ChartTest from 'src/components/GemeindeDetail/ChartTest.vue';
+import { useRoute } from 'vue-router';
 
 /**
  * Einer der 3 möglichen Bereiche der Daten
@@ -72,11 +73,13 @@ const environmentSectorMean = ref(0);
 const economySectorMean = ref(0);
 
 //Data fetching
+
+const route = useRoute()
 const {
   error,
   isFetching,
   data: municipalityData,
-} = await useFetch('http://localhost:3000/municipalities')
+} = await useFetch(`http://localhost:3000/municipalities?name=${route.params.id}`)
   .get()
   .json<Municipality[]>();
 
