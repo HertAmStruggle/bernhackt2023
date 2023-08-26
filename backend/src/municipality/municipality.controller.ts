@@ -17,9 +17,13 @@ export class MunicipalityController {
         return new HttpException("not implemented", 501)
     }
 
-    @Get('/:id')
+    @Get('indicator')
+    async getAllIndicators() {
+        return this.municipalityService.getAllIndicators()
+    }
+
+    @Get(':id')
     async getMunicipalityById(@Param('id') id: number) {
         return new HttpException(`not implemented: ${id}`, 501)
     }
-
 }
