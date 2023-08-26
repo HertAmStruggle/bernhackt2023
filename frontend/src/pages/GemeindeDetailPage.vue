@@ -16,16 +16,6 @@
       <BereichScoreGraph title="Wirtschaft" :rating="economySectorMean" />
     </section>
 
-    <q-toggle
-      :label="source"
-      color="primary"
-      false-value="fact_indicators"
-      true-value="survey_indicators"
-      v-model="source"
-      right-label
-      size="md"
-    />
-
     <section class="tabs">
       <q-btn-toggle
         v-model="sector"
@@ -49,7 +39,6 @@
 
     <section class="themen">
       <ThemenOverviewGraph
-        :source="source"
         :sector="sector"
         :municipality-data="municipalityData[0]"
       ></ThemenOverviewGraph>
@@ -60,12 +49,11 @@
 <script setup lang="ts">
 import BereichScoreGraph from 'src/components/GemeindeDetail/BereichScoreGraph.vue';
 import { useFetch } from '@vueuse/core';
-import type { Municipality, Sector, Source } from 'src/data/interfaces';
-import { ref, watch } from 'vue';
+import type { Municipality, Sector } from 'src/data/interfaces';
+import { ref } from 'vue';
 import ThemenOverviewGraph from 'src/components/GemeindeDetail/ThemenOverviewGraph.vue';
 
 const sector = ref<Sector>('environment');
-const source = ref<Source>('fact_indicators');
 
 const socialSectorMean = ref(0);
 const environmentSectorMean = ref(0);
@@ -79,13 +67,20 @@ const {
   .get()
   .json<Municipality[]>();
 
-function calculateSectorMean(sector: Sector, source: Source) {
+function calculateSectorMean(sector: Sector) {
   let sum = 0;
   let amount = 0;
 
   //TODO: fix
-  console.log(municipalityData.value?.[0][source]);
-  municipalityData.value?.[0][source].forEach((indicator) => {
+  console.log(municipalityData.value?.[0]);
+  municipalityData.value?.[0].fact_indicators.forEach((indicator) => {
+    if (indicator.sector === sector) {
+      sum = sum + indicator.value;
+      amount++;
+    }
+  });
+
+  municipalityData.value?.[0].survey_indicators.forEach((indicator) => {
     if (indicator.sector === sector) {
       sum = sum + indicator.value;
       amount++;
@@ -97,15 +92,9 @@ function calculateSectorMean(sector: Sector, source: Source) {
   return Math.round((sum / amount) * 10) / 10;
 }
 
-watch(
-  source,
-  (newSource) => {
-    socialSectorMean.value = calculateSectorMean('social', newSource);
-    environmentSectorMean.value = calculateSectorMean('environment', newSource);
-    economySectorMean.value = calculateSectorMean('economy', newSource);
-  },
-  { immediate: true }
-);
+socialSectorMean.value = calculateSectorMean('social');
+environmentSectorMean.value = calculateSectorMean('environment');
+economySectorMean.value = calculateSectorMean('economy');
 </script>
 
 <style>
