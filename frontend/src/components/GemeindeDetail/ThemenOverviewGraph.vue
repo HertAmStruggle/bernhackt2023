@@ -15,7 +15,7 @@
           v-if="factIndicators[index].value !== undefined"
           size="30px"
           :value="factIndicators[index].value / 10"
-          color="primary"
+          :color="getColor(factIndicators[index].value)"
           class="q-mt-sm"
           rounded
         >
@@ -39,7 +39,7 @@
           v-if="surveyIndicators[index].value !== undefined"
           size="30px"
           :value="surveyIndicators[index].value / 10"
-          color="primary"
+          :color="getColor(surveyIndicators[index].value)"
           class="q-mt-sm"
           rounded
         >
@@ -63,6 +63,17 @@ const props = defineProps<{
   sector: Sector;
   municipalityData: Municipality;
 }>();
+
+function getColor(input: number) {
+  if (input > 7) {
+    return 'green-5';
+  }
+  if (input > 4) {
+    return 'orange-5';
+  } else {
+    return 'red-5';
+  }
+}
 
 const factIndicators = props.municipalityData.fact_indicators;
 const surveyIndicators = props.municipalityData.survey_indicators;

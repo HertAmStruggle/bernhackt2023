@@ -1,5 +1,5 @@
 <template>
-  <Radar id="my-chart-id" :options="chartOptions" :data="chartData" />
+  <Radar id="my-chart-id" :options="chartOptions" :data="chartData"/>
 </template>
 
 <script setup lang="ts">
@@ -38,19 +38,54 @@ const factData = computed(() => {
   const filteredObjects = props.municipalityData.fact_indicators.filter(
     (obj) => obj.sector === props.sector
   );
-  return filteredObjects.map((indicator) => {
-    return Math.floor(indicator.value);
+
+  const aggregatedValues = filteredObjects.reduce((acc, curr) => {
+    const { subject, value } = curr;
+
+    if (!acc[subject]) {
+      acc[subject] = { sum: 0, count: 0 };
+    }
+
+    acc[subject].sum += value;
+    acc[subject].count += 1;
+
+    return acc;
+  }, {} as { [subject: string]: { sum: number; count: number } });
+
+  const roundedObjects = Object.entries(aggregatedValues).map(([subject, { sum, count }]) => {
+    const meanValue = count !== 0 ? sum / count : 0;
+
+    return { subject, value: meanValue };
   });
+
+  return roundedObjects.map(obj => obj.value);
 });
 
 const surveyData = computed(() => {
   const filteredObjects = props.municipalityData.survey_indicators.filter(
     (obj) => obj.sector === props.sector
   );
-  console.log(surveyData)
-  return filteredObjects.map((indicator) => {
-    return Math.floor(indicator.value);
+
+  const aggregatedValues = filteredObjects.reduce((acc, curr) => {
+    const { subject, value } = curr;
+
+    if (!acc[subject]) {
+      acc[subject] = { sum: 0, count: 0 };
+    }
+
+    acc[subject].sum += value;
+    acc[subject].count += 1;
+
+    return acc;
+  }, {} as { [subject: string]: { sum: number; count: number } });
+
+  const roundedObjects = Object.entries(aggregatedValues).map(([subject, { sum, count }]) => {
+    const meanValue = count !== 0 ? sum / count : 0;
+
+    return { subject, value: meanValue };
   });
+  console.log(roundedObjects)
+  return roundedObjects.map(obj => obj.value);
 });
 
 ChartJS.register(

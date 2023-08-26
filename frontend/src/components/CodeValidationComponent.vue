@@ -24,13 +24,13 @@ function onReset() {
   >
     Hast du bereits einen Code? (Tipp für Hackathon 'bärnhäckt')
     <q-input
-      class="q-mt-md"
+      class="q-mt-lg"
       filled
       type="text"
       v-model="code"
       label="Code *"
       lazy-rules
-      :rules="[ val => val && val.length === 9 || 'Geben Sie einen 6-stelligen Code ein ']"
+      :rules="[ val => val && val.length === 9 || 'Geben Sie einen 9-stelligen Code ein ']"
     />
 
     <div>
