@@ -20,16 +20,16 @@
     <q-form class="searchbar">
       <q-select
         @keydown.enter="searchForCity()"
-        :loading="loadingFlag"
         type="text"
         v-model="citySearch"
         label="Search for a City"
         filled
+        :loading="loading"
         lazy-rules
         use-input
         hide-selected
         fill-input
-        input-debounce="0"
+        input-debounce="400"
         :options="cities"
         @filter="filterFn"
       />
@@ -62,55 +62,50 @@
 </template>
 
 <script setup lang="ts">
+import { useFetch } from '@vueuse/core';
+import { Municipality } from 'src/data/interfaces';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
-
-const loadingFlag = ref(false);
 const citySearch = ref<null | { label: string; county: string }>(null);
+const loading = ref(false)
 
 const data = [
   {
-    label: 'Biu',
+    label: 'Bern',
     county: 'Bern',
   },
   {
-    label: 'Bärn',
-    county: 'Bern',
-  },
-  {
-    label: 'Züri',
+    label: 'Zürich',
     county: 'Zürich',
   },
   {
-    label: 'Gänf',
+    label: 'Genf',
     county: 'Genf',
   },
   {
-    label: 'Basu',
-    county: 'Basel-Stadt',
+    label: 'Jens',
+    county: 'Bern',
   },
 ];
 
 const cities = ref(data);
 
 function filterFn(val: string, update: (arg0: { (): void; (): void }) => void) {
+  if (val.length >= 3) {
+    fetchCities(val);
+  }
+
   if (val === '') {
     update(() => {
       cities.value = data;
-
-      // here you have access to "ref" which
-      // is the Vue reference of the QSelect
     });
     return;
   }
 
-  update(() => {
-    const needle = val.toLowerCase();
-    cities.value = data.filter(
-      (v) => v.label.toLowerCase().indexOf(needle) > -1
-    );
+  update(async () => {
+    await fetchCities(val);
     if (cities.value.length == 1) {
       citySearch.value = {
         label: cities.value[0].label,
@@ -124,13 +119,32 @@ function filterFn(val: string, update: (arg0: { (): void; (): void }) => void) {
   });
 }
 
+async function fetchCities(searchString: string) {
+  loading.value = true
+  const {
+    error,
+    data: municipalityData,
+  } = await useFetch(
+    `http://localhost:3000/municipalities?name_like=${searchString}`
+  )
+    .get()
+    .json<Municipality[]>();
+
+  if (municipalityData.value) {
+    cities.value = municipalityData.value?.map((city) => {
+      return {
+        label: city.name,
+        county: city.canton,
+      };
+    });
+  }
+  loading.value = false
+}
+
 async function searchForCity() {
-  console.log(citySearch.value);
+  console.log('searching.............', citySearch.value);
   if (citySearch.value) {
-    await router.push(
-      `/gemeinden/${citySearch.value.label + citySearch.value.county}`
-    );
-    console.log(citySearch.value.label);
+    await router.push(`/gemeinden/${citySearch.value.label}`);
   }
 }
 </script>
