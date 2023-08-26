@@ -19,7 +19,6 @@
     </div>
     <q-form class="searchbar">
       <q-select
-        @keydown.enter="searchForCity()"
         type="text"
         v-model="citySearch"
         label="Search for a City"
@@ -64,7 +63,7 @@
 <script setup lang="ts">
 import { useFetch } from '@vueuse/core';
 import { Municipality } from 'src/data/interfaces';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -111,18 +110,14 @@ function filterFn(val: string, update: (arg0: { (): void; (): void }) => void) {
         label: cities.value[0].label,
         county: cities.value[0].county,
       };
-      console.log({
-        label: cities.value[0].label,
-        county: cities.value[0].county,
-      });
     }
   });
 }
 
+//TODO: error catching
 async function fetchCities(searchString: string) {
   loading.value = true
   const {
-    error,
     data: municipalityData,
   } = await useFetch(
     `http://localhost:3000/municipalities?name_like=${searchString}`
@@ -141,12 +136,14 @@ async function fetchCities(searchString: string) {
   loading.value = false
 }
 
-async function searchForCity() {
-  console.log('searching.............', citySearch.value);
+//Watcher to push once something is selected
+watch(citySearch, async () => {
   if (citySearch.value) {
     await router.push(`/gemeinden/${citySearch.value.label}`);
   }
-}
+})
+
+
 </script>
 
 <style>

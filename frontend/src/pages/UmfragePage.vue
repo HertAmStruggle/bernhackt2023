@@ -3,7 +3,7 @@ import {ref} from 'vue';
 import {polls, SingleSectorPoll} from 'src/data/polls';
 import QuestionComponent from 'components/QuestionComponent.vue';
 import UserInputComponent from 'components/UserInputComponent.vue';
-import CodeValidationComponent from "components/CodeValidationComponent.vue";
+import CodeValidationComponent from 'components/CodeValidationComponent.vue';
 
 const sectors: SingleSectorPoll[] = polls.filter(item => item.sector);
 
@@ -12,14 +12,18 @@ let started = ref(false)
 function startPoll() {
   started.value = true
 }
+
+function submitForm() {
+  console.log('submitting')
+}
 </script>
 
 <template>
-  <div class='text-h6 text-weight-bold'>
-    <h3>Umfrage zur Nachhaltigkeit</h3>
-    <div v-if="!started">
+  <div class='text-h6 text-weight-bold text-center'>
+    <h3 class="text-center">Umfrage zur Nachhaltigkeit</h3>
+    <div v-if="!started" style="margin-right: auto; margin-left: auto;">
 
-      <div class='text-body1 q-mb-xl' style='max-width: 1000px'>
+      <div class='text-body1 q-mb-xl text-center' style='max-width: 1000px; margin-right: auto; margin-left: auto;' >
         Wir sind an Ihren Erfahrungen zu drei spezifischen Themenbereichen in unserer Gemeinde interessiert.
         Im Folgenden finden Sie diese drei Kategorien, jeweils begleitet von mehreren Fragen.<br>
         <br>
@@ -45,11 +49,12 @@ function startPoll() {
       class='q-mb-xl'
       color='primary'
       :label='!started ? "Starte die Umfrage" : "Speichern und Abschicken"'
-      @click='startPoll'
+      @click='startPoll()'
     />
 
     <div v-if=started>
-      <div v-for='item in sectors' :key='item.sector' class='q-mb-lg'>
+      <q-form>
+        <div v-for='item in sectors' :key='item.sector' class='q-mb-lg'>
         <q-card style='max-width: 1500px;  height:auto' class='q-pa-md'>
           <q-expansion-item :label='item.sector'>
 
@@ -59,12 +64,13 @@ function startPoll() {
                  :key='index'>
 
               <q-separator class='q-mb-lg'/>
-              <QuestionComponent :question='question'/>
+              <QuestionComponent :question='question' :index="index" :sector="item.sector"/>
             </div>
 
           </q-expansion-item>
         </q-card>
       </div>
+      </q-form>
     </div>
   </div>
 </template>

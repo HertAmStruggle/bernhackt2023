@@ -17,14 +17,7 @@
     <div v-for="city in filteredCities" :key="city.name">
       <router-link :to="'/gemeinden/' + city.name + city.county">
         <q-card style="padding: 10px; text-align: center">
-          <q-img
-            style="width: 203px; height: 246px; object-fit: cover"
-            :src="getFlagLink(city.county)"
-          />
-          <div class="text-h2">
-            {{ city.name }}
-          </div>
-          <q-item clickable>
+          <q-item>
             <q-item-section avatar>
               <q-img
                 style="width: 40px; object-fit: cover"

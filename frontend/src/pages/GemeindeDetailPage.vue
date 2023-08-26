@@ -5,7 +5,7 @@
       <h2>{{ municipalityData[0].name }}</h2>
       <q-avatar square>
         <img
-          src="https://upload.wikimedia.org/wikipedia/commons/4/47/Wappen_Bern_matt.svg"
+          :src="getFlagLink(municipalityData[0].canton)"
         />
       </q-avatar>
     </section>
@@ -58,6 +58,7 @@ import { computed, ref, watch } from 'vue';
 import ThemenOverviewGraph from 'src/components/GemeindeDetail/ThemenOverviewGraph.vue';
 import ChartTest from 'src/components/GemeindeDetail/ChartTest.vue';
 import { useRoute } from 'vue-router';
+import { getFlagLink } from 'src/data/functions';
 
 /**
  * Einer der 3 möglichen Bereiche der Daten

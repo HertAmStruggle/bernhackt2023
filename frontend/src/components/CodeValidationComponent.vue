@@ -1,7 +1,7 @@
 <script setup>
 import {ref} from 'vue';
 
-const valid = 'quasar'
+const valid = 'bärnhäckt'
 let code = ref(null)
 const emit = defineEmits(['validatedCode'])
 
@@ -22,7 +22,7 @@ function onReset() {
     @submit="onSubmit"
     @reset="onReset"
   >
-    Hast du bereits einen Code?
+    Hast du bereits einen Code? (Tipp für Hackathon 'bärnhäckt')
     <q-input
       class="q-mt-md"
       filled
@@ -30,7 +30,7 @@ function onReset() {
       v-model="code"
       label="Code *"
       lazy-rules
-      :rules="[ val => val && val.length === 6 || 'Geben Sie einen 6-stelligen Code ein ']"
+      :rules="[ val => val && val.length === 9 || 'Geben Sie einen 6-stelligen Code ein ']"
     />
 
     <div>
