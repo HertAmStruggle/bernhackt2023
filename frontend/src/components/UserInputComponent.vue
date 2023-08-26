@@ -15,9 +15,9 @@ function onReset() {
     class="q-gutter-md"
     @reset="onReset"
   >
-    Schreibe dich ein und erhalte dein Code.
+    Schreibe dich ein und erhalte deinen Code
     <q-input
-      class="q-mt-md"
+      class="q-mt-xl"
       filled
       type="text"
       v-model="name"

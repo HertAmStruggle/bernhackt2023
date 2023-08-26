@@ -5,7 +5,7 @@ import QuestionComponent from 'components/QuestionComponent.vue';
 import UserInputComponent from 'components/UserInputComponent.vue';
 import CodeValidationComponent from 'components/CodeValidationComponent.vue';
 
-const sectors: SingleSectorPoll[] = polls.filter(item => item.sector);
+const sectors: SingleSectorPoll[] = polls
 
 let started = ref(false)
 
