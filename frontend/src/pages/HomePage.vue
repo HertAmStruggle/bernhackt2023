@@ -20,14 +20,15 @@
         :loading="loadingFlag"
         type="text"
         v-model="citySearch"
-        input-debounce="500"
         label="Search for a City"
         filled
         lazy-rules
         use-input
         hide-selected
         fill-input
-        :options="filteredCities"
+        input-debounce="0"
+        :options="cities"
+        @filter="filterFn"
       />
     </q-form>
 
@@ -58,15 +59,15 @@
 </template>
 
 <script setup lang="ts">
-import {computed, ref} from 'vue';
+import {ref} from 'vue';
 import {useRouter} from 'vue-router';
 
 const router = useRouter();
 
 const loadingFlag = ref(false);
-const citySearch = ref('');
+const citySearch = ref<null | {label: string, county: string}>(null);
 
-const cities = [
+const data = [
   {
     label: 'Biu',
     county: 'Bern'
@@ -89,16 +90,35 @@ const cities = [
   },
 ]
 
-const filteredCities = computed(() => {
-  return cities.filter((city) =>
-    city
-      .label?.toLowerCase()
-      .includes(citySearch.value.toLowerCase())
-  );
-});
+const cities = ref(data)
+
+function filterFn (val: string, update: (arg0: { (): void; (): void; }) => void) {
+  if (val === '') {
+    update(() => {
+      cities.value = data
+
+      // here you have access to "ref" which
+      // is the Vue reference of the QSelect
+    })
+    return
+  }
+
+  update(() => {
+    const needle = val.toLowerCase()
+    cities.value = data.filter(v => v.label.toLowerCase().indexOf(needle) > -1)
+    if (cities.value.length == 1){
+      citySearch.value = {label: cities.value[0].label, county: cities.value[0].county}
+      console.log({label: cities.value[0].label, county: cities.value[0].county})
+    }
+  })
+}
 
 async function searchForCity() {
-  await router.push(`/gemeinde/${citySearch.value}`);
+  console.log(citySearch.value)
+  if(citySearch.value){
+    await router.push(`/gemeinde/${citySearch.value.label + citySearch.value.county}`);
+    console.log(citySearch.value.label)
+  }
 }
 </script>
 
