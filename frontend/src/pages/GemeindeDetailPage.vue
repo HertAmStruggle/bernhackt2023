@@ -11,9 +11,17 @@
     </section>
 
     <section class="themen-summary">
-      <BereichScoreGraph title="Umwelt" :rating="environmentSectorMean" />
-      <BereichScoreGraph title="Soziales" :rating="socialSectorMean" />
-      <BereichScoreGraph title="Wirtschaft" :rating="economySectorMean" />
+      <BereichScoreGraph title="Umwelt" :rating="environmentSectorMean"/>
+      <BereichScoreGraph title="Soziales" :rating="socialSectorMean"/>
+      <BereichScoreGraph title="Wirtschaft" :rating="economySectorMean"/>
+    </section>
+
+    <section class="themen-vergleich">
+      <BereichVergleichGraph
+        :umweltFact="environmentFactMean" :umweltSurvey="environmentSurveyMean"
+        :sozialesFact="socialFactMean" :sozialesSurvey="socialSurveyMean"
+        :wirtschaftFact="economyFactMean" :wirtschaftSurvey="economySurveyMean"
+      />
     </section>
 
     <section class="tabs">
@@ -52,13 +60,14 @@
 
 <script setup lang="ts">
 import BereichScoreGraph from 'src/components/GemeindeDetail/BereichScoreGraph.vue';
-import { useFetch } from '@vueuse/core';
-import type { Municipality, Sector } from 'src/data/interfaces';
-import { computed, ref, watch } from 'vue';
+import {useFetch} from '@vueuse/core';
+import type {Municipality, Sector} from 'src/data/interfaces';
+import {computed, ref, watch} from 'vue';
 import ThemenOverviewGraph from 'src/components/GemeindeDetail/ThemenOverviewGraph.vue';
 import ChartTest from 'src/components/GemeindeDetail/ChartTest.vue';
-import { useRoute } from 'vue-router';
-import { getFlagLink } from 'src/data/functions';
+import {useRoute} from 'vue-router';
+import {getFlagLink} from 'src/data/functions';
+import BereichVergleichGraph from 'components/GemeindeDetail/BereichVergleichGraph.vue';
 
 /**
  * Einer der 3 möglichen Bereiche der Daten
@@ -71,6 +80,16 @@ const sector = ref<Sector>('environment');
 const socialSectorMean = ref(0);
 const environmentSectorMean = ref(0);
 const economySectorMean = ref(0);
+
+/**
+ * Variablen die für jeden Sektor abhängig von der Datenquelle den Durchschnitt darstellen
+ */
+const socialFactMean = ref(0);
+const environmentFactMean = ref(0);
+const economyFactMean = ref(0);
+const socialSurveyMean = ref(0);
+const environmentSurveyMean = ref(0);
+const economySurveyMean = ref(0);
 
 //Data fetching
 const route = useRoute();
@@ -89,7 +108,7 @@ watch(
   () => {
     getData();
   },
-  { immediate: true }
+  {immediate: true}
 );
 
 async function getData() {
@@ -100,6 +119,14 @@ async function getData() {
     socialSectorMean.value = calculateSectorMean('social');
     environmentSectorMean.value = calculateSectorMean('environment');
     economySectorMean.value = calculateSectorMean('economy');
+
+    socialFactMean.value = calcSectorTypeMean('social', 'fact');
+    environmentFactMean.value = calcSectorTypeMean('environment', 'fact');
+    economyFactMean.value = calcSectorTypeMean('economy', 'fact');
+    socialSurveyMean.value = calcSectorTypeMean('social', 'survey');
+    environmentSurveyMean.value = calcSectorTypeMean('environment', 'survey');
+    economySurveyMean.value = calcSectorTypeMean('economy', 'survey');
+
   }
 }
 
@@ -125,6 +152,29 @@ function calculateSectorMean(sector: Sector) {
   });
   return Math.round((sum / amount) * 10) / 10;
 }
+
+function calcSectorTypeMean(sector: Sector, type: string) {
+  let sum = 0;
+  let amount = 0;
+
+  if (type == 'fact') {
+    municipalityData.value?.[0].fact_indicators.forEach((indicator) => {
+      if (indicator.sector === sector) {
+        sum = sum + indicator.value;
+        amount++;
+      }
+    });
+  } else if (type == 'survey') {
+    municipalityData.value?.[0].survey_indicators.forEach((indicator) => {
+      if (indicator.sector === sector) {
+        sum = sum + indicator.value;
+        amount++;
+      }
+    });
+  }
+  return Math.round((sum / amount) * 10) / 10;
+}
+
 </script>
 
 <style>

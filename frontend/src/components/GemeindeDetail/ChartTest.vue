@@ -47,6 +47,7 @@ const surveyData = computed(() => {
   const filteredObjects = props.municipalityData.survey_indicators.filter(
     (obj) => obj.sector === props.sector
   );
+  console.log(surveyData)
   return filteredObjects.map((indicator) => {
     return Math.floor(indicator.value);
   });
