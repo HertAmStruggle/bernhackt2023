@@ -35,12 +35,12 @@ const props = defineProps({
  */
 const circleColor = computed(() => {
   if (props.rating > 7) {
-    return 'positive';
+    return 'green-5';
   }
   if (props.rating > 4) {
-    return 'warning';
+    return 'orange-5';
   } else {
-    return 'negative';
+    return 'red-5';
   }
 });
 </script>
