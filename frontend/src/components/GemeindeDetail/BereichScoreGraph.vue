@@ -5,7 +5,7 @@
       show-value
       font-size="12px"
       :value="props.rating * 10"
-      size="75px"
+      size="125px"
       :thickness="0.22"
       :color="circleColor"
       track-color="grey-3"

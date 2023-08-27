@@ -18,11 +18,13 @@
       navigation
       padding
       arrows
-      style="width: 100%; border: solid #26a69a 1px"
-      height="300px"
+      style="width: 100%; height: 50%; border: solid #26a69a 1px"
       class="bg-white text-black rounded-borders"
     >
-      <q-carousel-slide name="circles" class="column no-wrap flex-center">
+      <q-carousel-slide
+        name="circles"
+        class="column no-wrap flex-center"
+        style="margin-top: -2%; padding: 50px 50px 60px 50px;">
         <section class="themen-summary">
           <BereichScoreGraph title="Umwelt" :rating="environmentSectorMean"/>
           <BereichScoreGraph title="Soziales" :rating="socialSectorMean"/>
@@ -30,13 +32,15 @@
         </section>
       </q-carousel-slide>
 
-      <q-carousel-slide name="bars" class="column no-wrap flex-center">
-        <section class="themen-vergleich" style="width">
+      <q-carousel-slide
+        name="bars"
+        class="column no-wrap flex-center"
+        style="margin-top: -2%; padding: 50px 50px 60px 50px;">
+        <section class="themen-vergleich">
           <BereichVergleichGraph
             :umweltFact="environmentFactMean" :umweltSurvey="environmentSurveyMean"
             :sozialesFact="socialFactMean" :sozialesSurvey="socialSurveyMean"
             :wirtschaftFact="economyFactMean" :wirtschaftSurvey="economySurveyMean"
-            style="width: 100%"
           />
         </section>
       </q-carousel-slide>
@@ -238,5 +242,9 @@ function calcSectorTypeMean(sector: Sector, type: string) {
 
 .custom-toggle {
   border: 1px solid #027be3;
+}
+
+.themen-vergleich {
+  width: 40%;
 }
 </style>
