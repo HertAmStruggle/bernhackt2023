@@ -18,7 +18,7 @@
       navigation
       padding
       arrows
-      style="width: 100%; height: 50%; border: solid #26a69a 1px"
+      style="width: 100%; height: 350px; border: solid #26a69a 1px"
       class="bg-white text-black rounded-borders"
     >
       <q-carousel-slide
